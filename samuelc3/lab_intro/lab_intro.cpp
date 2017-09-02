@@ -15,6 +15,12 @@ using namespace cs225;
  *
  * @return The grayscale image.
  */
+
+
+
+
+
+
 PNG grayscale(PNG image) {
   /// This function is already written for you so you can see how to
   /// interact with our PNG class.
@@ -55,7 +61,18 @@ PNG grayscale(PNG image) {
  * @return The image with a spotlight.
  */
 PNG createSpotlight(PNG image, int centerX, int centerY) {
-
+for(unsigned x = 0; x < image.width(); x++) {
+    for (unsigned y = 0; y < image.height(); y++) {
+	HSLAPixel *pixel = image.getPixel(x, y);
+	if( sqrt(((x - centerX)*(x-centerX))+((y-centerY)*(y-centerY)))> 200){
+		pixel -> l = 0;
+		}
+	if(sqrt(((x - centerX)*(x-centerX))+((y-centerY)*(y-centerY)))<= 200){
+		pixel->l = (pixel->l)*(1-sqrt(((x - centerX)*(x-centerX))+((y-centerY)*(y-centerY)))*.005);
+		}
+	}
+}			
+	
   return image;
 }
 
@@ -70,9 +87,19 @@ PNG createSpotlight(PNG image, int centerX, int centerY) {
  *
  * @return The illinify'd image.
 **/
-PNG illinify(PNG image) {
-
-  return image;
+PNG illinify(PNG image){
+for (unsigned x = 0; x < image.width(); x++) {
+    for (unsigned y = 0; y < image.height(); y++) {
+	HSLAPixel *pixel = image.getPixel(x, y);
+	if(pixel -> h > 113.5 && pixel -> h < 293.5){
+		pixel -> h = 216;
+		}
+	if(((pixel -> h <= 113.5) && (pixel->h >= 0)) || ((pixel -> h >= 293.5) && (pixel->h <= 360))){
+		pixel -> h = 11;
+		} 
+	}
+}
+return image;
 }
 
 
@@ -89,6 +116,14 @@ PNG illinify(PNG image) {
 * @return The watermarked image.
 */
 PNG watermark(PNG firstImage, PNG secondImage) {
-
+ for (unsigned x = 0; x < firstImage.width(); x++) {
+    for (unsigned y = 0; y < firstImage.height(); y++) {
+	HSLAPixel *numerodos = secondImage.getPixel(x,y);
+	HSLAPixel *numerouno = firstImage.getPixel(x,y);
+	if(numerodos -> l == 1){
+	     	numerouno -> l = (numerouno -> l) + .2;
+				}	
+			}		
+		}		
   return firstImage;
 }
