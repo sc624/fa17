@@ -8,7 +8,7 @@
 
 #include <iostream>
 
-#include "png.h"
+#include "cs225/PNG.h"
 #include "flower.h"
 
 using namespace std;

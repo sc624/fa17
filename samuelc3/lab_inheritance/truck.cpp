@@ -142,3 +142,12 @@ void Truck::clear()
     delete engine;
 }
 
+void Truck::draw(PNG* canvas) const{
+    cabin -> draw(canvas);
+    trailer -> draw(canvas);
+    engine -> draw(canvas);
+    window -> draw(canvas);
+    for(int x = 0 ; x < NUM_WHEELS; x++){
+        (*(wheels + x)) -> draw(canvas);
+    }    
+}
