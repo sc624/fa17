@@ -151,9 +151,8 @@ void Image::scale(unsigned w, unsigned h){
     double hfactor = (double)h / (double)this->height();
     
 
-    if(hfactor < wfactor)
+    if(hfactor > wfactor)
             this->scale(wfactor);
-    else if(wfactor <= hfactor)
+    else if(wfactor >= hfactor)
             this->scale(hfactor);
 }
-
