@@ -290,7 +290,7 @@ bool SkipList::remove(int key)
 
     // can't remove a node that doesn't exist
     if(node == NULL)
-        ret = false;
+        return false;
 
     length--;
 
