@@ -30,11 +30,11 @@ SkipList::SkipList()
     tail->key = INT_MAX;
     tail->value = HSLAPixel();
 
-    int listHeight = 1;
-    int length = 0;
+    listHeight = 1;
+    length = 0;
 
-    int probability = 50;
-    int maxLevel = 14;  // log(128 * 128)
+    probability = 50;
+    maxLevel = 14;  // log(128 * 128)
 }
 
 /**
@@ -69,7 +69,7 @@ void SkipList::insert(int key, HSLAPixel value)
     if (temp)
     {
         temp->value = value;
-
+	return;
     }   
 
     length++;
@@ -127,7 +127,7 @@ void SkipList::insert(int key, HSLAPixel value)
             forwardLevel++;
 
         }
-        else if(forward->nodePointers.size() > (size_t)forwardLevel)
+	else if(forward->nodePointers.size() > (size_t)forwardLevel)
         {
             forward->nodePointers[forwardLevel].prev = newNode;
             newNode->nodePointers[forwardLevel].next = forward;
@@ -148,11 +148,10 @@ void SkipList::insert(int key, HSLAPixel value)
             backwardLevel++;
         }
 
-        if(prev->nodePointers.size() > (size_t)backwardLevel)
+	else if(prev->nodePointers.size() > (size_t)backwardLevel)
         {
             prev->nodePointers[backwardLevel].next = newNode;
             newNode->nodePointers[backwardLevel].prev = prev;
-            backwardLevel++;
         }
         else
         {
@@ -174,7 +173,7 @@ HSLAPixel SkipList::search(int key)
 
     retval = find(key);
 
-    if (retval == NULL) 
+    if (retval != NULL) 
         return retval->value;
 
     return HSLAPixel(0,0,0, 50);
@@ -224,12 +223,12 @@ SkipNode * SkipList::findRHelper(int key, int level, SkipNode * curr)
     int nextKey =  curr->nodePointers[level].next->key;
     SkipNode* ret;
 
-    if (nextKey == key){
+    if (nextKey == key)
         return curr->nodePointers[level].next;
-    }
-    else if (nextKey > key){
-        return findRHelper(key, level - 1, curr);
-    }
+
+    else if (nextKey > key) 
+        return findRHelper(key, level-1, curr);
+
     else
         return findRHelper(key, level, curr->nodePointers[level].next);    
 
@@ -321,7 +320,7 @@ vector<int> SkipList::traverse()
 
     vector<int> ret;
 
-    while (listPrintingTraverser != tail)
+    while (listPrintingTraverser != NULL)
     {
         ret.push_back(listPrintingTraverser->key);
 
@@ -330,4 +329,3 @@ vector<int> SkipList::traverse()
 
     return ret;
 }
-
