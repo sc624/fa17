@@ -152,6 +152,7 @@ void SkipList::insert(int key, HSLAPixel value)
         {
             prev->nodePointers[backwardLevel].next = newNode;
             newNode->nodePointers[backwardLevel].prev = prev;
+            backwardLevel++;
         }
         else
         {
