@@ -1,5 +1,7 @@
 #ifndef STICKERSHEET_H
 #define STICKERSHEET_H
+
+#include "Image.h"
 using namespace std;    
 class StickerSheet{
         public:
@@ -15,11 +17,15 @@ class StickerSheet{
             Image render () const;
             void copyHelper(const StickerSheet &other);
             void destroy_();
+
+
+
         private:
             unsigned maxpapushin;
-            Image ** binky[];
-            unsigned *coordinate[][];
-            unsigned *lay[];
+            Image ** binky;
+            unsigned *Xcoordinate;
+            unsigned *Ycoordinate;
+            unsigned current;
 };
 
 #endif
