@@ -4,15 +4,25 @@ using namespace std;
 
 int main() {
       
-  Image alma;
-  alma.readFromFile("tests/alma.png");
+  Image windows;
+  windows.readFromFile("lojmr.png");
+ 
+     Image rug;
+    rug.readFromFile("images.png");
+    Image vacuum;
+    vacuum.readFromFile("index.jpg");
+    Image chair;
+    chair.readFromFile("14409535.jpg");
 
-  Image i;
-  i.readFromFile("tests/i.png");
+  StickerSheet sheet(windows, 5);
 
-  StickerSheet sheet(alma, 5);
-  sheet.addSticker(i, 20, 200);
+    sheet.addSticker(rug, 900, 200);
+    sheet.addSticker(vacuum, 1000, 250);
+    sheet.addSticker(chair, 1300, 150);
 
-  sheet.render();
-        return 0;
+    sheet.render();
+    Image done;
+    done.writeToFile("myImage.png");
+    
+    return 0;
 }
