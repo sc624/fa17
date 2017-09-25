@@ -64,7 +64,7 @@
 
           <h3>Score:
             <span style="color: hsla(211, 58%, 26%, 1)">
-              <strong>16/17 (94.12%)</strong>
+              <strong>17/17 (100.00%)</strong>
             </span>
           </h3>
 
@@ -73,9 +73,9 @@
                 <div class="panel-heading collapsed" data-toggle="collapse" data-target="#panel-0" style="cursor: pointer;">
                   <div class="panel-heading-left">
                     <h4 class="panel-title">
-                      <span class="glyphicon glyphicon-remove" aria-hidden="true" style="color: #F44336"></span>
-                      <span style="color: #F44336; margin-left: 5px;"><strong>[0/1]</strong></span>
-                      <span style="margin-left: 5px;">undefined</span>
+                      <span class="glyphicon glyphicon-ok" aria-hidden="true" style="color: #4CAF50"></span>
+                      <span style="color: #4CAF50; margin-left: 5px;"><strong>[0/0]</strong></span>
+                      <span style="margin-left: 5px;">Output from &#x60;make&#x60;</span>
                     </h4>
                   </div>
                   <div class="panel-heading-right">
@@ -85,10 +85,28 @@
                 <div id="panel-0" class="panel-collapse collapse">
                   <ul class="list-group">
                     <li class="list-group-item"><strong>Max points:</strong> 0</li>
-                    <li class="list-group-item"><strong>Earned points:</strong> 1</li>
+                    <li class="list-group-item"><strong>Earned points:</strong> 0</li>
+                      <li class="list-group-item">
+                        <div><strong>Message</strong></div>
+                        <pre style="background: black; white-space: pre-wrap; overflow-y: auto; overflow-x: hidden; max-height: 200px"><code style="color: white; font-family: monospace;">In file included from Image.cpp:3:
+./cs225/RGB_HSL.h:15:20: warning: unused function &#x27;rgb2hsl&#x27; [-Wunused-function]
+  static hslaColor rgb2hsl(rgbaColor rgb) {
+                   ^
+./cs225/RGB_HSL.h:67:20: warning: unused function &#x27;hsl2rgb&#x27; [-Wunused-function]
+  static rgbaColor hsl2rgb(hslaColor hsl) {
+                   ^
+2 warnings generated.
+</code></pre>
+                      </li>
                       <li class="list-group-item">
                         <div><strong>Output</strong></div>
-                        <pre style="background: black; white-space: pre-wrap; overflow-y: auto; overflow-x: hidden; max-height: 200px;"><code style="color: white; font-family: monospace;">Error: Output exceeds buffer.</code></pre>
+                        <pre style="background: black; white-space: pre-wrap; overflow-y: auto; overflow-x: hidden; max-height: 200px;"><code style="color: white; font-family: monospace;">clang++ -std&#x3D;c++1y -stdlib&#x3D;libc++ -c -g -O0 -Wall -Wextra -pedantic cs225/PNG.cpp
+clang++ -std&#x3D;c++1y -stdlib&#x3D;libc++ -c -g -O0 -Wall -Wextra -pedantic cs225/HSLAPixel.cpp
+clang++ -std&#x3D;c++1y -stdlib&#x3D;libc++ -c -g -O0 -Wall -Wextra -pedantic cs225/lodepng/lodepng.cpp
+clang++ -std&#x3D;c++1y -stdlib&#x3D;libc++ -c -g -O0 -Wall -Wextra -pedantic Image.cpp
+clang++ -std&#x3D;c++1y -stdlib&#x3D;libc++ -c -g -O0 -Wall -Wextra -pedantic tests/unit_tests.cpp
+clang++ unit_tests.o PNG.o HSLAPixel.o lodepng.o Image.o -std&#x3D;c++1y -stdlib&#x3D;libc++ -lc++abi -lpthread -lm -o test
+</code></pre>
                       </li>
                   </ul>
                 </div>
@@ -407,6 +425,26 @@
                   </div>
                 </div>
                 <div id="panel-16" class="panel-collapse collapse">
+                  <ul class="list-group">
+                    <li class="list-group-item"><strong>Max points:</strong> 1</li>
+                    <li class="list-group-item"><strong>Earned points:</strong> 1</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="panel panel-default">
+                <div class="panel-heading collapsed" data-toggle="collapse" data-target="#panel-17" style="cursor: pointer;">
+                  <div class="panel-heading-left">
+                    <h4 class="panel-title">
+                      <span class="glyphicon glyphicon-ok" aria-hidden="true" style="color: #4CAF50"></span>
+                      <span style="color: #4CAF50; margin-left: 5px;"><strong>[1/1]</strong></span>
+                      <span style="margin-left: 5px;">Image scale(w * 0.5, h * 0.5) scales the image in a reasonable way</span>
+                    </h4>
+                  </div>
+                  <div class="panel-heading-right">
+                    <span class="glyphicon glyphicon-chevron-down"></span>
+                  </div>
+                </div>
+                <div id="panel-17" class="panel-collapse collapse">
                   <ul class="list-group">
                     <li class="list-group-item"><strong>Max points:</strong> 1</li>
                     <li class="list-group-item"><strong>Earned points:</strong> 1</li>
