@@ -95,8 +95,8 @@ Image StickerSheet::render() const{
     for(unsigned x = 0; x < current; x++){
         for(unsigned x_ = Xcoordinate[x]; x_ - Xcoordinate[x] < binky->width(); x_++){
             for(unsigned y_ = Ycoordinate[x]; y_ - Ycoordinate[x] < binky->height(); y_++){
-                if(y_ > rip->height()){
-                    rip->scale((rip->height() + 1)/(rip->height()));
+                if(y_ >= rip->height()-1){
+                    rip->resize(rip->width(), rip->height()+1);
                 }
                 HSLAPixel * pixel = rip->getPixel(x_, y_);
                 HSLAPixel * ppiixxeell = binky[x].getPixel(x_ - Xcoordinate[x], y_ - Ycoordinate[x]);
@@ -107,8 +107,8 @@ Image StickerSheet::render() const{
                     pixel -> a = ppiixxeell -> a;
                     }
                 }
-            if( x_ < rip->width())
-                    rip->scale((rip->width() + 1)/(rip->height()));
+            if( x_ >= rip->width()-1)
+                    rip->resize(rip->width() + 1,rip->height());
             }
         }
     return *rip;
