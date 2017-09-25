@@ -1,6 +1,7 @@
 #include "StickerSheet.h"
 #include <iostream>
 #include "Image.h"
+#include "cs225/PNG.h"
 using namespace std;
 
 
@@ -75,8 +76,11 @@ Image* StickerSheet::getSticker(unsigned index) const{
 }
 
 Image StickerSheet::render() const{
-    unsigned width_ = 0, height_ = 0, temp;
-    for(unsigned i = 0; i < maxpapushin; i++){
+    Image *rip;
+    Image *newImage = new Image(*binky[0]);
+        for(unsigned x = 0; x < maxpapushin ; x++){
+            rip = binky[x];
+/*    for(unsigned i = 0; i < maxpapushin; i++){
         temp = Xcoordinate[i] + binky[i]->width();
         if(temp > width_)
             width_ = temp;
@@ -84,22 +88,27 @@ Image StickerSheet::render() const{
         if(temp > height_)
             height_ = temp;
         }
-
-    PNG *orbitgum = new PNG(width_, height_);
-    for(unsigned layer = 0; layer < maxpapushin; layer++){
-        for(unsigned x = Xcoordinate[layer]; x < binky[layer]->width(); x++){
-            for(unsigned y = Ycoordinate[layer]; y < binky[layer]->height(); y++){
-                HSLAPixel *pixel = orbitgum->getPixel(x,y);
-                HSLAPixel *ppiixxeell = binky[layer]->getPixel(Xcoordinate[layer],Ycoordinate[layer]);
-                pixel -> h = ppiixxeell -> h;
-                pixel -> s = ppiixxeell -> s;
-                pixel -> l = ppiixxeell -> l;
-                if(ppiixxeell -> a != 0) 
-                        pixel -> a = ppiixxeell -> a;
+*/
+        for(unsigned x_ = Xcoordinate[x]; x_ - Xcoordinate[x] < rip->width(); x_++){
+            for(unsigned y_ = Ycoordinate[x]; y_ - Ycoordinate[x] < rip->height(); y_++){
+                if(y_ >= newImage->height()){
+                    newImage->scale((newImage->height() + 1)/(newImage->height()));
+                }
+                if((rip->getPixel(x_ - Xcoordinate[x], y_ - Ycoordinate[x])) -> a != 0){
+                    (newImage->getPixel(x_,y_))->h = (rip->getPixel(x_ - Xcoordinate[x],y_ - Ycoordinate[x])) -> h;
+                    (newImage->getPixel(x_,y_))->s = (rip->getPixel(x_ - Xcoordinate[x],y_ - Ycoordinate[x])) -> s;
+                    (newImage->getPixel(x_,y_))->l = (rip->getPixel(x_ - Xcoordinate[x],y_ - Ycoordinate[x])) -> l;
+                    if(rip->getPixel(x_ - Xcoordinate[x], y_ - Ycoordinate[x]) != 0)
+                    (newImage->getPixel(x_,y_))->a = (rip->getPixel(x_ - Xcoordinate[x],y_ - Ycoordinate[x])) -> a;
+                    if(x_ >= newImage->width()){
+                        newImage->scale((newImage->width() + 1)/(newImage->width()));
+                    }
             }
         }
     }
-    return orbitgum;
+}
+
+    return *rip;
 }
 
 void StickerSheet::destroy_(){
