@@ -3,10 +3,10 @@
 using namespace std;
 
 int main() {
-      
+
   Image windows;
   windows.readFromFile("lojmr.png");
- 
+
     Image rug;
     rug.readFromFile("images.png");
     Image vacuum;
@@ -25,6 +25,6 @@ int main() {
     sheet.addSticker(vacuum, 200, 200);
     Image done = sheet.render();
     done.writeToFile("myImage.png");
-    
+
     return 0;
 }

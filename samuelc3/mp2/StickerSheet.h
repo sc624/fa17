@@ -22,7 +22,7 @@ class StickerSheet{
 
         private:
             unsigned maxpapushin;
-            Image * pants;
+            Image  pants;
             Image * binky;
             unsigned *Xcoordinate;
             unsigned *Ycoordinate;
