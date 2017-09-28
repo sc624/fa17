@@ -44,7 +44,7 @@ test: $(OBJS_TEST)
 	$(LD) $(OBJS_TEST) $(LDFLAGS) -o test
 
 clean:
-	rm -rf $(EXE) $(EXE)-asan $(OBJS_DIR) *.o *.d
+	rm -rf $(EXE) $(EXE)-asan $(OBJS_DIR) *{.o,.d} test tests/*{.d,.o}
 
 tidy: clean
 	rm -rf doc
