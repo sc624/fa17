@@ -42,7 +42,7 @@ TEST_CASE("sum"){
 		s.push(i);
 	stack<int> s2 = s;
 	SECTION("Sum is correct") {
-		REQUIRE(sum(s) == 136);
+		REQUIRE(QuackFun::sum(s) == 136);
 	}
 	SECTION("Stack is unchanged") {
 		REQUIRE(s == s2);
@@ -54,7 +54,7 @@ TEST_CASE("sum"){
     stack<double> s4 = s3;
 
     stack<double>::_ctor_count = 0;
-    double sumFloat = sum<double>(s3);
+    double sumFloat = QuackFun::sum<double>(s3);
     
     SECTION("Float sum is correct") {
     	if (sumFloat > 270.61 || sumFloat < 270.59)
