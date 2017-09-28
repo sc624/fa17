@@ -33,7 +33,7 @@ T sum(stack<T>& s)
     T val = s.top();
     s.pop();
     T t = val + sum(s);
-    s.push(s.top());
+    s.push(val);
     return t;
 
 
@@ -55,9 +55,37 @@ template <typename T>
 void scramble(queue<T>& q)
 {
     stack<T> s;
-    // optional: queue<T> q2;
+    queue<T> q2;
 
-    // Your code here
+
+    q.front();
+    q2.front();
+T begin = q.front();
+T end = q.back();
+T hi, bye;
+T val = 2;
+T poo = 1;
+while(begin != end){
+for(int p = 0; p < poo; p++){
+  hi = q.front();
+   q2.push(hi);
+   q.pop();
+}
+
+for(int i = 0; i < val; i++){
+    T qpop = q.front();
+    s.push(qpop);
+    q.pop();
+  }
+for(int x = 0 ; x < val; x++){
+    bye = s.top();
+   q2.push(bye);
+   s.pop();
+}
+val = val + 2;
+poo = poo + 2;
+}
+
 }
 
 /**
