@@ -26,9 +26,17 @@ template <typename T>
 T sum(stack<T>& s)
 {
     // Your code here
-    return T(); // stub return value (0 for primitive types). Change this!
+    if(s.empty())
+    return T();     // stub return value (0 for primitive types). Change this!
                 // Note: T() is the default value for objects, and 0 for
                 // primitive types
+    T val = s.top();
+    s.pop();
+    T t = val + sum(s);
+    s.push(s.top());
+    return t;
+
+
 }
 
 /**
