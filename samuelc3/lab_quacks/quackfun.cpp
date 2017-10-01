@@ -58,35 +58,54 @@ void scramble(queue<T>& q)
     queue<T> q2;
 
 
-    q.front();
-    q2.front();
 T begin = q.front();
 T end = q.back();
 T hi, bye;
-T val = 2;
+T val = 0;
 T poo = 1;
-while(begin != end){
-for(int p = 0; p < poo; p++){
-  hi = q.front();
-   q2.push(hi);
-   q.pop();
-}
 
-for(int i = 0; i < val; i++){
-    T qpop = q.front();
-    s.push(qpop);
-    q.pop();
+
+while (q.empty() == false) {
+  if(val%2 != 0){
+    for (int p = 0; p < val; p++) {
+      q2.push(q.front());
+      if(q.empty() == true)
+        break;
+    }
   }
-for(int x = 0 ; x < val; x++){
-    bye = s.top();
-   q2.push(bye);
-   s.pop();
-}
-val = val + 2;
-poo = poo + 2;
+  else{
+    for(int j = 0; j < val; j++){
+      s.push(q.front());
+      q.pop();
+      if(q.empty() == true)
+        break;
+    }
+    for(int a = 0; a < val; a++){
+      q2.push(s.top());
+    }
+  }
+  val++;
 }
 
+// hi = q.front();
+//    q2.push(hi);
+//    q.pop();
+//
+// for(int i = 0; i < val; i++){
+//     T qpop = q.front();
+//     s.push(qpop);
+//     q.pop();
+//   }
+// for(int x = 0 ; x < val; x++){
+//     bye = s.top();
+//    q2.push(bye);
+//    s.pop();
+// }
+// val = val + 2;
+// poo = poo + 2;
+// q.push(q2.front);
 }
+
 
 /**
  * @return true if the parameter stack and queue contain only elements of
