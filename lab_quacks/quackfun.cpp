@@ -87,6 +87,10 @@ while (q.empty() == false) {
   val++;
 }
 
+while(q2.empty() == false){
+  q.push(q2.front());
+  q2.pop();
+}
 // hi = q.front();
 //    q2.push(hi);
 //    q.pop();
