@@ -59,28 +59,31 @@ void scramble(queue<T>& q)
 
 
 T begin = q.front();
-T end = q.back();
+T start = s.top();
 T poo = 1;
 
 
 while (q.empty() == false) {
   if(poo % 2 != 0){
+    if((int)q.size() < poo){
+      poo = q.size();
+      }
     for (int p = 0; p < poo; p++) {
       q2.push(q.front());
-      if(q.empty() == true)
-        break;
       q.pop();
     }
   }
   else if(poo % 2 == 0){
+    if((int)q.size() < poo){
+      poo = q.size();
+      }
     for(int j = 0; j < poo; j++){
       s.push(q.front());
-      if(q.empty() == true)
-        break;
       q.pop();
     }
     for(int a = 0; a < poo; a++){
       q2.push(s.top());
+      s.pop();
     }
   }
   poo++;
