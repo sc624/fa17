@@ -131,10 +131,32 @@ template <typename T>
 bool verifySame(stack<T>& s, queue<T>& q)
 {
     bool retval = true; // optional
-    //T temp1; // rename me
-    //T temp2; // rename :)
 
+    s.pop();
+    T stack_ = q.front(); // rename :)
+
+    if(s.top == true){
+      retval = (verifySame(s,q) && retval);
+    }
+
+    T queue_ = s.front(); // rename me
+
+    if(queue_ != stack_)
+      retval = false;
+
+    s.push(stack_);
+    q.push(queue_);
+        q.pop();
     return retval;
 }
-
+/*if(s.empty())
+return T();     // stub return value (0 for primitive types). Change this!
+            // Note: T() is the default value for objects, and 0 for
+            // primitive types
+T val = s.top();
+s.pop();
+T t = val + sum(s);
+s.push(val);
+return t;
+*/
 }
