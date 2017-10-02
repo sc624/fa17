@@ -58,10 +58,7 @@ void scramble(queue<T>& q)
     queue<T> q2;
 
 
-T begin = q.front();
-T start = s.top();
-T poo = 1;
-
+int poo = 1;
 
 while (q.empty() == false) {
   if(poo % 2 != 0){
@@ -73,6 +70,8 @@ while (q.empty() == false) {
       q.pop();
     }
   }
+
+
   else if(poo % 2 == 0){
     if((int)q.size() < poo){
       poo = q.size();
@@ -93,6 +92,7 @@ while(q2.empty() == false){
   q.push(q2.front());
   q2.pop();
 }
+}
 // hi = q.front();
 //    q2.push(hi);
 //    q.pop();
@@ -110,7 +110,7 @@ while(q2.empty() == false){
 // val = val + 2;
 // poo = poo + 2;
 // q.push(q2.front);
-}
+
 
 
 /**
@@ -132,16 +132,16 @@ bool verifySame(stack<T>& s, queue<T>& q)
 {
     bool retval = true; // optional
 
+    T stack_ = s.top(); // rename :)
     s.pop();
-    T stack_ = q.front(); // rename :)
 
-    if(s.top == true){
+    if(s.empty() == false){
       retval = (verifySame(s,q) && retval);
     }
 
-    T queue_ = s.front(); // rename me
+    T queue_ = q.front(); // rename me
 
-    if(queue_ != stack_)
+    if(stack_ != queue_)
       retval = false;
 
     s.push(stack_);
