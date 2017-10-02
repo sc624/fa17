@@ -10,6 +10,8 @@
 template <class T>
 List<T>::~List() {
   /// @todo Graded in MP3.1
+  delete head_;
+  delete tail_;
 }
 
 /**
@@ -19,6 +21,8 @@ List<T>::~List() {
 template <class T>
 void List<T>::clear() {
   /// @todo Graded in MP3.1
+  delete[] this;
+  this = NULL;
 }
 
 /**
@@ -30,6 +34,15 @@ void List<T>::clear() {
 template <class T>
 void List<T>::insertFront(T const& ndata) {
   /// @todo Graded in MP3.1
+  if(size() == 0){
+    this-> head_ = NULL;
+  }
+  ListNode* knew = new ListNode(ndata);
+  knew -> next = this -> head_;
+  this -> head_ = knew;
+
+
+
 }
 
 /**
