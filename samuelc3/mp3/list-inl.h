@@ -10,8 +10,7 @@
 template <class T>
 List<T>::~List() {
   /// @todo Graded in MP3.1
-  delete head_;
-  delete tail_;
+    clear();
 }
 
 /**
@@ -21,9 +20,12 @@ List<T>::~List() {
 template <class T>
 void List<T>::clear() {
   /// @todo Graded in MP3.1
-  delete[] this;
-  this = NULL;
-}
+  while(head_ != NULL){
+    tail_ = head_ -> next;
+    delete head_;
+    head_ = tail_;
+    } 
+  }
 
 /**
  * Inserts a new node at the front of the List.
@@ -34,14 +36,35 @@ void List<T>::clear() {
 template <class T>
 void List<T>::insertFront(T const& ndata) {
   /// @todo Graded in MP3.1
-  if(size() == 0){
-    this-> head_ = NULL;
+
+  ListNode * poo = new ListNode(ndata);
+    poo->next = head_;
+    poo -> prev = NULL;
+  if(head_ == NULL){
+    poo -> next = NULL;
+    tail_ = poo;
+  }  
+  else{
+    poo->next = head_;
+    head_ -> prev = poo;
   }
-  ListNode* knew = new ListNode(ndata);
-  knew -> next = this -> head_;
-  this -> head_ = knew;
-
-
+  head_ = poo;
+/*
+  if(head_ == NULL){
+        head_ = new ListNode(ndata);
+        head_->next = NULL;
+        head_->prev = NULL;
+        tail_ = head_;
+        tail_-> next = NULL;
+        tail_->prev = NULL;
+  }
+  head_ -> prev = new ListNode(ndata);  
+  ListNode * knew = head_;
+    head_ = head_ -> prev;
+    head_ -> prev = NULL;
+    head_ -> next = knew;
+*/
+        length_++;
 
 }
 
@@ -49,11 +72,34 @@ void List<T>::insertFront(T const& ndata) {
  * Inserts a new node at the back of the List.
  * This function **SHOULD** create a new ListNode.
  *
+  ://github.com/dyjhhh/cs225/blob/master/mp3/list.cppistNode * poo = new ListNode(ndata);
+    poo -> prev = NULL;
+  if(head_ == NULL){
+    poo -> next = NULL;
+    poo = head_;
+  }  
+  else{
+    poo->next = head_;
+    head -> prev = poo;
+  }
+  head_ = poo
  * @param ndata The data to be inserted.
  */
 template <class T>
 void List<T>::insertBack(const T& ndata) {
   /// @todo Graded in MP3.1
+  ListNode * pool = new ListNode(ndata);
+    pool -> next = NULL;
+  if(tail_ == NULL){
+    pool -> prev = NULL;
+    head_ = pool;
+  }  
+  else{
+    pool->prev = tail_;
+    tail_ -> next = pool;
+  }
+  tail_ = pool;
+    length_++;
 }
 
 /**
@@ -62,6 +108,7 @@ void List<T>::insertBack(const T& ndata) {
 template <class T>
 void List<T>::reverse() {
   reverse(head_, tail_);
+    
 }
 
 /**
@@ -78,6 +125,33 @@ void List<T>::reverse() {
 template <class T>
 void List<T>::reverse(ListNode*& startPoint, ListNode*& endPoint) {
     /// @todo Graded in MP3.1
+    ListNode* endPointnext = endPoint->next;
+    ListNode* startPointprev = startPoint->prev;
+    ListNode* current = startPoint;
+   ListNode* startPointnext = startPoint -> next;
+   ListNode* binky = NULL;
+       while(current != endPoint){
+    binky = current -> next;
+    current -> next = current -> prev;
+    current -> prev = binky;
+    current = startPointnext;
+    startPointnext = startPointnext -> next;
+
+   } 
+       startPoint -> next = endPointnext;
+      if(endPointnext != NULL)
+            endPointnext -> prev = startPoint;
+      endPoint -> next = endPoint -> prev;
+      endPoint -> prev = startPointprev;
+        if(startPointprev != NULL)
+                startPointprev -> next = endPoint;
+        if(startPoint == head_)
+                head_ = endPoint;
+        if(endPoint == tail_)
+                tail_ = startPoint;
+        binky = endPoint;
+        endPoint = startPoint;
+        startPoint = binky;
 }
 
 /**
@@ -89,7 +163,33 @@ void List<T>::reverse(ListNode*& startPoint, ListNode*& endPoint) {
 template <class T>
 void List<T>::reverseNth(int n) {
   /// @todo Graded in MP3.1
+     if (length_ <= 1 || n == 1)
+                     return;
+    if (n == length_)
+                    reverse();
+    ListNode *bink = head_;
+    ListNode *newhead = head_;
+    ListNode *newtail = NULL;
+    
+    int count = n;
+    while(bink != NULL){
+        if(count == 0){
+            if(newhead == head_)
+                    head_ = newhead;
+            reverse(newhead, newtail);
+            count = n;
+            newhead = bink;
+            newtail = bink;
+        }
+        if(bink -> next == NULL)
+                reverse(newhead, bink);
+    newtail = bink;
+    bink = bink->next;
+    count--;
+    }
+
 }
+
 
 /**
  * Modifies the List using the waterfall algorithm.
@@ -103,6 +203,29 @@ void List<T>::reverseNth(int n) {
 template <class T>
 void List<T>::waterfall() {
   /// @todo Graded in MP3.1
+    if(length_ == 0)
+            return;
+    ListNode * all = head_;
+    ListNode * start = head_;
+    int count = 1;
+    while(all->next != tail_ && all != tail_ && all != NULL){
+        while(count > 0){
+            start = all;
+            all = all -> next;
+            count--;
+        }
+        start->next = all->next;
+        all->next->prev = start;
+        tail_ -> next = all;
+        all -> next = NULL;
+        all -> prev = tail_;
+        tail_ = all;
+        all = start -> next;
+        count = 1;
+    }
+    all = NULL;
+    start = NULL;
+    
 }
 
 /**
