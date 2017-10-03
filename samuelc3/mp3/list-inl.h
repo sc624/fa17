@@ -164,28 +164,27 @@ template <class T>
 void List<T>::reverseNth(int n) {
   /// @todo Graded in MP3.1
      if (length_ <= 1 || n == 1)
-                     return;
+            return;
     if (n == length_)
-                    reverse();
+            reverse();
     ListNode *bink = head_;
     ListNode *newhead = head_;
     ListNode *newtail = NULL;
     
-    int count = n;
+    int num = n;
     while(bink != NULL){
-        if(count == 0){
+        if(num == 0){
             if(newhead == head_)
                     head_ = newhead;
             reverse(newhead, newtail);
-            count = n;
-            newhead = bink;
-            newtail = bink;
+            num = n;
+            newhead = newtail = bink;
         }
         if(bink -> next == NULL)
                 reverse(newhead, bink);
     newtail = bink;
     bink = bink->next;
-    count--;
+    num--;
     }
 
 }
@@ -207,12 +206,12 @@ void List<T>::waterfall() {
             return;
     ListNode * all = head_;
     ListNode * start = head_;
-    int count = 1;
-    while(all->next != tail_ && all != tail_ && all != NULL){
-        while(count > 0){
+    int num = 1;
+    while(all != tail_ && all->next != tail_ && all != NULL){
+        while(num > 0){
             start = all;
             all = all -> next;
-            count--;
+            num--;
         }
         start->next = all->next;
         all->next->prev = start;
@@ -221,7 +220,7 @@ void List<T>::waterfall() {
         all -> prev = tail_;
         tail_ = all;
         all = start -> next;
-        count = 1;
+        num = 1;
     }
     all = NULL;
     start = NULL;
