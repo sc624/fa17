@@ -137,6 +137,7 @@ class BinaryTree
      * @return The sum of the distances of all nodes to the root
      */
     int sumDistances() const;
+    void bruh(Node* subRoot, int &count, int sum) const;
 
     /**
       *  Uses vector to store values of the nodes of a binary tree in order.

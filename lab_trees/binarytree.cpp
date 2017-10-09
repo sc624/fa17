@@ -156,16 +156,18 @@ void BinaryTree<T>::preOrder(Node* root, vector<vector<T>> &paths, vector<T> som
 template <typename T>
 int BinaryTree<T>::sumDistances() const
 {
-  return -1;
+  int count = 0;
+  bruh(root, count, 0);
+  return count;
 }
 
 
 
-// template <typename T>
-// void BinaryTree<T>::bruh(Node* subRoot, vector<T> &treeVector) const{
-//     if(subRoot != NULL){
-//       check(subRoot->left, treeVector);
-//       treeVector.push_back(subRoot->elem);
-//       check(subRoot->right, treeVector);
-//     }
-// }
+template <typename T>
+void BinaryTree<T>::bruh(Node* subRoot, int &count, int sum) const{
+    if(subRoot != NULL){
+        count += sum;
+        bruh(subRoot->left, count, sum+1);
+        bruh(subRoot->right, count, sum+1);
+    }
+}
