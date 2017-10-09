@@ -108,6 +108,7 @@ class BinaryTree
      *  (not creating a flipped copy).
      */
     void mirror();
+    void heyo(Node* hey);
 
     /**
      * @return True if an in-order traversal of the tree would produce a
@@ -115,6 +116,7 @@ class BinaryTree
      *  criterion for a binary tree to be a binary search tree.
      */
     bool isOrdered() const;
+    void check(BinaryTree::Node* subRoot, vector<T> &treeVector) const;
 
     /**
      * creates vectors of all the possible paths from the root of the tree to any leaf
@@ -125,7 +127,7 @@ class BinaryTree
      * @param paths vector of vectors that contains path of nodes
      */
     void printPaths(vector<vector<T> > &paths) const;
-
+    void preOrder(Node* root, vector<vector<T>> &paths, vector<T> currentVect)const;
     /**
      * Each node in a tree has a distance from the root node - the depth of that
      * node, or the number of edges along the path from that node to the root.
