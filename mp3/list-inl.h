@@ -1,3 +1,4 @@
+
 /**
  * @file list.cpp
  * Doubly Linked List (MP 3).
@@ -7,6 +8,7 @@
  * Destroys the current List. This function should ensure that
  * memory does not leak on destruction of a list.
  */
+
 template <class T>
 List<T>::~List() {
   /// @todo Graded in MP3.1
@@ -332,8 +334,39 @@ void List<T>::mergeWith(List<T>& otherList) {
  */
 template <class T>
 typename List<T>::ListNode* List<T>::merge(ListNode* first, ListNode* second) {
-  /// @todo Graded in MP3.2
-  return NULL;
+
+
+    ListNode * temp = NULL;
+    ListNode * temp1 = first;
+    ListNode* temp2 = second;
+    
+    if(first->data < second->data) {
+        temp = first;
+        temp1 = first->next;
+    } else {
+        temp = second;
+        temp2 = second->next; 
+    }
+   
+    while(temp1 != NULL || temp2 != NULL) {
+        if((temp1 != NULL && temp1->data < temp2->data) || temp2 == NULL) {
+            temp->next = temp1;
+            temp1->prev = temp;
+            temp1 = temp1->next;
+        } else {
+            temp->next = temp2;
+            temp2->prev = temp;
+            temp2 = temp2->next;
+        }
+        temp = temp->next;
+    }
+
+    if(first->data < second->data){
+    	return first;
+	}
+    else{
+    	return second;
+	}
 }
 
 /**
@@ -360,6 +393,12 @@ void List<T>::sort() {
  */
 template <class T>
 typename List<T>::ListNode* List<T>::mergesort(ListNode* start, int chainLength) {
-    /// @todo Graded in MP3.2
-    return NULL;
+        if (chainLength==1){
+		return start;
+	}
+        ListNode *righthalf = split(start,chainLength / 2);
+        ListNode *lefthalf = start;
+        righthalf = mergesort(righthalf,chainLength-chainLength/2);
+        start = mergesort(lefthalf,chainLength / 2);
+        return merge(righthalf,start);
 }
