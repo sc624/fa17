@@ -337,8 +337,7 @@ typename List<T>::ListNode* List<T>::merge(ListNode* first, ListNode* second) {
 
 
     ListNode * temp = NULL;
-    ListNode * temp1 = first;
-    ListNode* temp2 = second;
+    ListNode * temp1 = first, * temp2 = second;
     
     if(first->data < second->data) {
         temp = first;
@@ -348,8 +347,8 @@ typename List<T>::ListNode* List<T>::merge(ListNode* first, ListNode* second) {
         temp2 = second->next; 
     }
    
-    while(temp1 != NULL || temp2 != NULL) {
-        if((temp1 != NULL && temp1->data < temp2->data) || temp2 == NULL) {
+    while(temp2 != NULL || temp1 != NULL) {
+        if( (temp1 != NULL && temp1->data < temp2->data)|| temp2 == NULL) {
             temp->next = temp1;
             temp1->prev = temp;
             temp1 = temp1->next;
@@ -361,12 +360,10 @@ typename List<T>::ListNode* List<T>::merge(ListNode* first, ListNode* second) {
         temp = temp->next;
     }
 
-    if(first->data < second->data){
+    if(first->data < second->data)
     	return first;
-	}
-    else{
+    else
     	return second;
-	}
 }
 
 /**
