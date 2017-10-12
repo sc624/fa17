@@ -89,8 +89,37 @@ HuffmanTree::removeSmallest(queue<TreeNode*>& singleQueue,
      * the queues. Return this item after removing it from its queue.
      */
 
+
     TreeNode* smallest = NULL;
     // your code!
+    TreeNode* singletree = NULL;
+    TreeNode* mergetree = NULL;
+    TreeNode* temp1 = NULL, *temp2 = NULL;
+
+    if(singleQueue.empty() && mergeQueue.empty())
+      return NULL;
+
+    if(singleQueue.empty()){
+      mergetree = mergeQueue.front();
+      mergeQueue.pop();
+      return mergetree;
+}
+    else if(mergeQueue.empty()){
+      singletree = singleQueue.front();
+      singleQueue.pop();
+      return singletree;
+    }
+
+singletree = singleQueue.front();
+mergetree = mergeQueue.front();
+    if(mergetree -> freq < singletree -> freq){
+      smallest = mergetree;
+      mergeQueue.pop();
+    }
+    else{
+      smallest = singletree;
+      singleQueue.pop();
+    }
     return smallest;
 }
 
@@ -116,7 +145,22 @@ void HuffmanTree::buildTree(const vector<Frequency>& frequencies)
      * Finally, when there is a single node left, it is the root. Assign it
      * to the root and you're done!
      */
+     for(unsigned long i = 0; i < frequencies.size(); i++){
+       singleQueue.push(new TreeNode(frequencies[i]));
+     }
 
+     while(singleQueue.size() + mergeQueue.size() != 1){
+       TreeNode* smallest1 = removeSmallest(singleQueue, mergeQueue);
+       TreeNode* smallest2 = removeSmallest(singleQueue, mergeQueue);
+       TreeNode* mergeBoi = new TreeNode(smallest1->freq.getFrequency() + smallest2->freq.getFrequency());
+       mergeBoi -> left = smallest1;
+       mergeBoi -> right = smallest2;
+       mergeQueue.push(mergeBoi);
+     }
+
+     if(singleQueue.size() == 1 || mergeQueue.size() == 1){
+       root_ = removeSmallest(singleQueue,mergeQueue);
+}
 }
 
 string HuffmanTree::decodeFile(BinaryFileReader& bfile)
@@ -129,6 +173,8 @@ string HuffmanTree::decodeFile(BinaryFileReader& bfile)
 void HuffmanTree::decode(stringstream& ss, BinaryFileReader& bfile)
 {
     TreeNode* current = root_;
+    bool bitBoi = 0;
+    vector<bool> encodedBitBois;
     while (bfile.hasBits()) {
         /**
          * @todo Your code here!
@@ -141,7 +187,24 @@ void HuffmanTree::decode(stringstream& ss, BinaryFileReader& bfile)
          * character to the stringstream (with operator<<, just like cout)
          * and start traversing from the root node again.
          */
+         if(current ->left == NULL && current->right == NULL){
+           std::map<char, vector<bool>>::iterator it = bitsMap_.begin();
+           while(it != bitsMap_.end()){
+             if((it->second == encodedBitBois)){
+               ss << it->first;
+             }
+             it++;
+           }
+         }
 
+         bitBoi = bfile.getNextBit();
+         encodedBitBois.push_back(bitBoi);
+         if(bitBoi == 1){
+           current = current->right;
+         }
+         else{
+           current = current->left;
+         }
     }
 }
 
