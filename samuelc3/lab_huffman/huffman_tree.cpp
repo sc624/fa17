@@ -187,23 +187,18 @@ void HuffmanTree::decode(stringstream& ss, BinaryFileReader& bfile)
          * character to the stringstream (with operator<<, just like cout)
          * and start traversing from the root node again.
          */
-         if(current ->left == NULL && current->right == NULL){
-           std::map<char, vector<bool>>::iterator it = bitsMap_.begin();
-           while(it != bitsMap_.end()){
-             if((it->second == encodedBitBois)){
-               ss << it->first;
-             }
-             it++;
-           }
-         }
+
 
          bitBoi = bfile.getNextBit();
-         encodedBitBois.push_back(bitBoi);
-         if(bitBoi == 1){
+         if(bitBoi){
            current = current->right;
          }
          else{
            current = current->left;
+         }
+         if(current->left == NULL && current->right == NULL){
+           ss << (current->freq).getCharacter();
+           current = root_;
          }
     }
 }
@@ -230,7 +225,18 @@ void HuffmanTree::writeTree(TreeNode* current, BinaryFileWriter& bfile)
      * version: this is fine, as the structure of the tree still reflects
      * what the relative frequencies were.
      */
-
+     if(current -> left == NULL && current-> right == NULL){
+       bfile.writeBit(1);
+       bfile.writeByte((current->freq).getCharacter());
+       return;
+     }
+     bfile.writeBit(0);
+     if(current->left != NULL){
+       writeTree(current->left, bfile);
+     }
+     if(current->right != NULL){
+       writeTree(current->right, bfile);
+     }
 }
 
 HuffmanTree::TreeNode* HuffmanTree::readTree(BinaryFileReader& bfile)
@@ -251,7 +257,23 @@ HuffmanTree::TreeNode* HuffmanTree::readTree(BinaryFileReader& bfile)
      *      4. Your function should return the TreeNode it creates, or NULL
      *         if it did not create one.
      */
-    return NULL; // replaceme!
+     TreeNode* boolislife = NULL;
+     if(!bfile.hasBits()){
+       return NULL;
+     }
+     bool nextBoi = bfile.getNextBit();
+     if(nextBoi == 1){
+       boolislife = new TreeNode(Frequency(bfile.getNextByte(), 0));
+       boolislife->left = NULL;
+       boolislife->right = NULL;
+     }
+     else{
+       boolislife = new TreeNode(0);
+       boolislife -> left = readTree(bfile);
+       boolislife -> right = readTree(bfile);
+     }
+
+    return boolislife; // replaceme!
 }
 
 void HuffmanTree::buildMap(TreeNode* current, vector<bool>& path)
