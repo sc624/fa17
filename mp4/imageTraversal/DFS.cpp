@@ -13,8 +13,15 @@
  * Initializes a depth-first ImageTraversal on a given `png` image,
  * starting at `start`, and with a given `tolerance`.
  */
-DFS::DFS(const PNG & png, const Point & start, double tolerance) {  
+DFS::DFS(const PNG & png, const Point & start, double tolerance) {
   /** @todo [Part 1] */
+  unsigned xBoi = start.x;
+  unsigned yBoi = start.y;
+
+  pngWidth = png.width();
+  pngHeight = png.height();
+
+
 }
 
 /**

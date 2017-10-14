@@ -16,8 +16,9 @@ using namespace cs225;
  * Initializes a breadth-first ImageTraversal on a given `png` image,
  * starting at `start`, and with a given `tolerance`.
  */
-BFS::BFS(const PNG & png, const Point & start, double tolerance) {  
+BFS::BFS(const PNG & png, const Point & start, double tolerance) {
   /** @todo [Part 1] */
+  
 }
 
 /**
