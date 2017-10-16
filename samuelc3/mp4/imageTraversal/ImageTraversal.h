@@ -10,10 +10,10 @@ using namespace cs225;
 
 /**
  * A base class for traversal algorithms on images.
- * 
+ *
  * Each derived class must maintain an ordering of points on an image,
  * through calls to the virtual member functions `add` and `pop`.
- * 
+ *
  * A derived class provides a traversal by returning instances of
  * ImageTraversal::Iterator.
  */
@@ -29,11 +29,12 @@ public:
     Iterator & operator++();
     Point operator*();
     bool operator!=(const Iterator &other);
-  
+
   private:
 
-  };  
+  };
 
+  static double calculateDeltaPublic(const HSLAPixel & p1, const HSLAPixel & p2);  
 
   virtual Iterator begin() = 0;
   virtual Iterator end() = 0;
@@ -44,7 +45,7 @@ public:
   virtual bool empty() const = 0;
 
 private:
-  static double calculateDelta(const HSLAPixel & p1, const HSLAPixel & p2);  
+  static double calculateDelta(const HSLAPixel & p1, const HSLAPixel & p2);
 };
 
 

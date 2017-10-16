@@ -15,20 +15,26 @@
  */
 DFS::DFS(const PNG & png, const Point & start, double tolerance) {
   /** @todo [Part 1] */
-  unsigned xBoi = start.x;
-  unsigned yBoi = start.y;
-
-  pngWidth = png.width();
-  pngHeight = png.height();
-
+  // unsigned xBoi = start.x;
+  // unsigned yBoi = start.y;
+  //
+  // int pngWidth = png.width();
+  // int pngHeight = png.height();
+  this->png = png;
+  this->start = start;
+  this->tolerance = tolerance;
 
 }
+
+
+
 
 /**
  * Returns an iterator for the traversal starting at the first point.
  */
 ImageTraversal::Iterator DFS::begin() {
   /** @todo [Part 1] */
+
   return ImageTraversal::Iterator();
 }
 
@@ -45,6 +51,19 @@ ImageTraversal::Iterator DFS::end() {
  */
 void DFS::add(const Point & point) {
   /** @todo [Part 1] */
+
+  if(point.x < png.width() && point.y < png.height()){
+    if(calculateDeltaPublic(*png.getPixel(point.x,point.y),*png.getPixel(prev.x, prev.y)) < tolerance){
+    s.push(point);
+    prev = point;
+    }
+  }
+  else
+    return;
+    add(Point(point.x+1, point.y));
+    add(Point(point.x, point.y+1));
+    add(Point(point.x-1, point.y));
+    add(Point(point.x, point.y-1));
 }
 
 /**
@@ -52,7 +71,9 @@ void DFS::add(const Point & point) {
  */
 Point DFS::pop() {
   /** @todo [Part 1] */
-  return Point(0, 0);
+  Point pint = s.top();
+  s.pop();
+  return pint;
 }
 
 /**
@@ -60,7 +81,7 @@ Point DFS::pop() {
  */
 Point DFS::peek() const {
   /** @todo [Part 1] */
-  return Point(0, 0);
+  return s.top();
 }
 
 /**
@@ -68,5 +89,6 @@ Point DFS::peek() const {
  */
 bool DFS::empty() const {
   /** @todo [Part 1] */
-  return true;
+
+  return s.empty();
 }
