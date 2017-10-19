@@ -10,6 +10,12 @@
 
 using namespace std;
 
+// trim from end (in place)
+void rtrim(std::string &s) 
+{
+    s.erase(std::find_if(s.rbegin(), s.rend(),
+            std::not1(std::ptr_fun<int, int>(std::isspace))).base(), s.end());
+}
 
 // compare the two streams for equality
 bool tree_equals_output(stringstream & s, string filename)
@@ -22,6 +28,9 @@ bool tree_equals_output(stringstream & s, string filename)
     {
         if(!getline(s, out_s))
             return false;
+
+        rtrim(soln_s);
+        rtrim(out_s);
 
         if(out_s.compare(soln_s) != 0)
             return false;
