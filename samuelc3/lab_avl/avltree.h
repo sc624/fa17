@@ -20,6 +20,9 @@
 #include <vector>
 #include <sstream>
 #include <string>
+#include <string>
+#include <queue>
+#include <stack>
 
 using namespace std;
 
@@ -234,6 +237,11 @@ class AVLTree
     vector<string> functionCalls;
     /** This variable gets the inorder traversal of the AVL tree. **/
     vector<K> inorder;
+    Node * getIOP(Node*, bool);
+    void removeNode(Node *& root, K key);
+    Node * getMax(stack<Node*>);
+    Node * getMin(stack<Node*>);
+    void rebalancekey(Node*&, const K&);
 };
 
 #include "avltree_given.cpp"

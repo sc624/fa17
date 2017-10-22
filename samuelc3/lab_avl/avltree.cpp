@@ -3,6 +3,9 @@
  * Definitions of the binary tree functions you'll be writing for this lab.
  * You'll need to modify this file.
  */
+ #include <queue>
+ #include <stack>
+ #include <iostream>
 
 template <class K, class V>
 V AVLTree<K, V>::find(const K& key) const
@@ -32,6 +35,7 @@ void AVLTree<K, V>::rotateLeft(Node*& t)
     Node* r = t->right;
     t->right = r->left;
     r->left = t;
+    t->height = max(heightOrNeg1(t->left),heightOrNeg1(t->right))+1;
     t = r;
 }
 
@@ -51,6 +55,7 @@ void AVLTree<K, V>::rotateRight(Node*& t)
     Node* l = t->left;
     t->left = l->right;
     l->right = t;
+    t->height = max(heightOrNeg1(t->left),heightOrNeg1(t->right))+1;
     t = l;
   }
 
@@ -65,27 +70,24 @@ void AVLTree<K, V>::rotateRightLeft(Node*& t)
 template <class K, class V>
 void AVLTree<K, V>::rebalance(Node*& subtree)
 {
+  if(subtree == NULL)
+    return;
   int balance = heightOrNeg1(subtree->right) - heightOrNeg1(subtree->left);
   int leftBalanace = heightOrNeg1(subtree->left->right) - heightOrNeg1(subtree->left->left);
   int rightBalance = heightOrNeg1(subtree->right->right) - heightOrNeg1(subtree->right->left);
-  if(balance == -2){
-    if(leftBalanace == -1){
-      rotateRight(subtree);
-    }
-  else{
-      rotateLeftRight(subtree);
-    }
-  }
-
-  if(balance == 2){
-    if(rightBalance == 1){
-      rotateLeft(subtree);
-    }
-    else{
+  if(balance < -1){
+    if(subtree->right->key > subtree->key)
       rotateRightLeft(subtree);
-    }
+    if(subtree->right->key < subtree->key)
+      rotateLeft(subtree);
+  else if(balance > 1){
+    if(subtree->left->key < subtree->key)
+     rotateLeftRight(subtree);
+    if(subtree->left->key > subtree->key)
+     rotateRight(subtree);
   }
   subtree->height = max(heightOrNeg1(subtree->right), heightOrNeg1(subtree->left)) + 1;
+}
 }
 
 template <class K, class V>
@@ -97,8 +99,43 @@ void AVLTree<K, V>::insert(const K & key, const V & value)
 template <class K, class V>
 void AVLTree<K, V>::insert(Node*& subtree, const K& key, const V& value)
 {
-  if(subtree == NULL)
-    subtree = new Node(key, value);
+  if(root == NULL){
+    root = new Node(key, value);
+    root->height = 0;
+    return;
+  }
+  if(subtree->key > key) {
+    if(subtree->left == NULL)
+      subtree->left = new Node(key,value);
+    else
+      insert(subtree->left, key, value);
+  } else if(subtree->key < key) {
+    if(subtree->right == NULL)
+      subtree->right = new Node(key, value);
+    else
+      insert(subtree->right, key, value);
+  } else
+    return;
+  rebalancekey(subtree, key);
+}
+
+template <class K, class V>
+void AVLTree<K, V>::rebalancekey(Node *& subtree, const K& key) {
+  int balance = heightOrNeg1(subtree->right) - heightOrNeg1(subtree->left);
+  if (balance == 0)
+    return;
+  if (balance > 1) {
+    if(subtree->left->key < key)
+        rotateLeftRight(subtree);
+    if(subtree->left->key > key)
+        rotateRight(subtree);
+  } else if(balance < -1) {
+    if(subtree->right->key > key)
+        rotateRightLeft(subtree);
+    if(subtree->right->key < key)
+        rotateLeft(subtree);
+  }
+  subtree->height = max(heightOrNeg1(subtree->left), heightOrNeg1(subtree->right))+1;
 }
 
 template <class K, class V>
@@ -114,20 +151,115 @@ void AVLTree<K, V>::remove(Node*& subtree, const K& key)
         return;
 
     if (key < subtree->key) {
-        // your code here
+        remove(subtree->right, key);
     } else if (key > subtree->key) {
-        // your code here
+        remove(subtree->right, key);
     } else {
         if (subtree->left == NULL && subtree->right == NULL) {
-            /* no-child remove */
-            // your code here
+          Node * temp = subtree;
+          delete temp;
+          subtree = NULL;
         } else if (subtree->left != NULL && subtree->right != NULL) {
             /* two-child remove */
-            // your code here
+            Node * iop = getIOP(subtree->left, true);
+            swap(iop, subtree);
+            if(iop->left != NULL) {
+              swap(iop->left,iop);
+              removeNode(subtree, iop->left->key);
+            } else {
+              removeNode(subtree, iop->key);
+            }
         } else {
             /* one-child remove */
-            // your code here
+            if(subtree->left != NULL) {
+              Node * iop = getIOP(subtree->left, true);
+              swap(iop, subtree);
+              if(iop->left != NULL) {
+                swap(iop->left,iop);
+                removeNode(subtree, iop->left->key);
+              } else {
+                removeNode(subtree, iop->key);
+              }
+            }
+            if(subtree->right != NULL) {
+              Node * iop = getIOP(subtree->right, false);
+              swap(iop, subtree);
+              if(iop->right != NULL) {
+                swap(iop->right,iop);
+                removeNode(subtree, iop->right->key);
+              } else {
+                removeNode(subtree, iop->key);
+              }
+            }
         }
-        // your code here
+        if (subtree == NULL) return;
+int balance = heightOrNeg1(subtree->right) - heightOrNeg1(subtree->left);
+if (balance == 0) return;
+if (balance > 1) {
+if(heightOrNeg1(subtree->left->right) - heightOrNeg1(subtree->left->left) >= 0)
+    rotateRight(subtree);
+if(heightOrNeg1(subtree->left->right) - heightOrNeg1(subtree->left->left) < 0)
+    rotateLeftRight(subtree);
+} else if(balance < -1) {
+if(heightOrNeg1(subtree->right->right) - heightOrNeg1(subtree->right->left) <= 0)
+    rotateLeft(subtree);
+if(heightOrNeg1(subtree->right->right) - heightOrNeg1(subtree->right->left)  > 0)
+    rotateRightLeft(subtree);
     }
+}
+}
+
+template <class K, class V>
+typename AVLTree<K, V>::Node * AVLTree<K,V>::getIOP(Node* root, bool max) {
+  queue<Node *> q;
+  stack<Node *> s;
+  Node * temp = root;
+  q.push(temp);
+  while(!q.empty()) {
+    temp = q.front();
+    q.pop();
+    if(temp->left != NULL) q.push(temp->left);
+    if(temp->right != NULL) q.push(temp->right);
+    s.push(temp);
+  }
+  if(max) return getMax(s);
+  else return getMin(s);
+}
+
+template <class K, class V>
+typename AVLTree<K, V>::Node * AVLTree<K,V>::getMax(stack<Node*> s) {
+  Node * max = s.top();
+  while(!s.empty()) {
+    Node * curr = s.top();
+    if(curr->key > max->key) {
+      max = curr;
+    }
+    s.pop();
+  }
+  return max;
+}
+
+template <class K, class V>
+typename AVLTree<K, V>::Node * AVLTree<K,V>::getMin(stack<Node*> s) {
+  Node * min = s.top();
+  while(!s.empty()) {
+    Node * curr = s.top();
+    if(curr->key < min->key) {
+      min = curr;
+    }
+    s.pop();
+  }
+  return min;
+}
+
+template <class K, class V>
+void AVLTree<K,V>::removeNode(Node *& root, K key) {
+    if(root == NULL) return;
+    if (root->key == key) {
+        delete root;
+        root = NULL;
+        return;
+    }
+    removeNode(root->right, key);
+    removeNode(root->left, key);
 }
