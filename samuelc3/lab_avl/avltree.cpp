@@ -29,7 +29,10 @@ template <class K, class V>
 void AVLTree<K, V>::rotateLeft(Node*& t)
 {
     functionCalls.push_back("rotateLeft"); // Stores the rotation name (don't remove this)
-    // your code here
+    Node* r = t->right;
+    t->right = r->left;
+    r->left = t;
+    t = r;
 }
 
 template <class K, class V>
@@ -45,20 +48,44 @@ template <class K, class V>
 void AVLTree<K, V>::rotateRight(Node*& t)
 {
     functionCalls.push_back("rotateRight"); // Stores the rotation name (don't remove this)
-    // your code here
-}
+    Node* l = t->left;
+    t->left = l->right;
+    l->right = t;
+    t = l;
+  }
 
 template <class K, class V>
 void AVLTree<K, V>::rotateRightLeft(Node*& t)
 {
     functionCalls.push_back("rotateRightLeft"); // Stores the rotation name (don't remove this)
-    // your code here
+    rotateRight(t->right);
+    rotateLeft(t);
 }
 
 template <class K, class V>
 void AVLTree<K, V>::rebalance(Node*& subtree)
 {
-    // your code here
+  int balance = heightOrNeg1(subtree->right) - heightOrNeg1(subtree->left);
+  int leftBalanace = heightOrNeg1(subtree->left->right) - heightOrNeg1(subtree->left->left);
+  int rightBalance = heightOrNeg1(subtree->right->right) - heightOrNeg1(subtree->right->left);
+  if(balance == -2){
+    if(leftBalanace == -1){
+      rotateRight(subtree);
+    }
+  else{
+      rotateLeftRight(subtree);
+    }
+  }
+
+  if(balance == 2){
+    if(rightBalance == 1){
+      rotateLeft(subtree);
+    }
+    else{
+      rotateRightLeft(subtree);
+    }
+  }
+  subtree->height = max(heightOrNeg1(subtree->right), heightOrNeg1(subtree->left)) + 1;
 }
 
 template <class K, class V>
@@ -70,7 +97,8 @@ void AVLTree<K, V>::insert(const K & key, const V & value)
 template <class K, class V>
 void AVLTree<K, V>::insert(Node*& subtree, const K& key, const V& value)
 {
-    // your code here
+  if(subtree == NULL)
+    subtree = new Node(key, value);
 }
 
 template <class K, class V>
