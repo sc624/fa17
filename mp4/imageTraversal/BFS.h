@@ -22,13 +22,18 @@ public:
 
   ImageTraversal::Iterator begin();
   ImageTraversal::Iterator end();
-  
+
   void add(const Point & point);
   Point pop();
   Point peek() const;
   bool empty() const;
 
 private:
+
+  queue<Point> q;
+  PNG png;
+  Point start;
+  double tolerance;
 };
 
 #endif

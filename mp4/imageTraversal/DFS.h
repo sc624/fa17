@@ -32,10 +32,7 @@ private:
   stack<Point> s;
   PNG png;
   Point start;
-  Point prev;
   double tolerance;
-  vector<Point> visited;
-  vector<vector<Point>> 2d;
 };
 
 #endif

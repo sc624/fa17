@@ -23,7 +23,7 @@ DFS::DFS(const PNG & png, const Point & start, double tolerance) {
   this->png = png;
   this->start = start;
   this->tolerance = tolerance;
-
+  add(start);
 }
 
 
@@ -35,7 +35,7 @@ DFS::DFS(const PNG & png, const Point & start, double tolerance) {
 ImageTraversal::Iterator DFS::begin() {
   /** @todo [Part 1] */
 
-  return ImageTraversal::Iterator();
+  return ImageTraversal::Iterator(png, tolerance, start, true);
 }
 
 /**
@@ -51,19 +51,7 @@ ImageTraversal::Iterator DFS::end() {
  */
 void DFS::add(const Point & point) {
   /** @todo [Part 1] */
-
-  if(point.x < png.width() && point.y < png.height()){
-    if(calculateDeltaPublic(*png.getPixel(point.x,point.y),*png.getPixel(prev.x, prev.y)) < tolerance){
-    s.push(point);
-    prev = point;
-    }
-  }
-  else
-    return;
-    add(Point(point.x+1, point.y));
-    add(Point(point.x, point.y+1));
-    add(Point(point.x-1, point.y));
-    add(Point(point.x, point.y-1));
+  s.push(point);
 }
 
 /**
