@@ -5,13 +5,13 @@ OBJS_DIR = .objs
 OBJS_STUDENT = main.o
 OBJS_PROVIDED = coloredout.o
 
-OBJS_TEST = tests/basic.o 
+OBJS_TEST = tests/basic.o
 
 CXX = clang++
 LD = clang++
 WARNINGS = -pedantic -Wall -Werror -Wfatal-errors -Wextra -Wno-unused-parameter -Wno-unused-variable
 CXXFLAGS = -std=c++1y -stdlib=libc++ -g -O0 $(WARNINGS) -MMD -MP -c
-LDFLAGS = -std=c++1y -stdlib=libc++ -lpng -lc++abi -lpthread
+LDFLAGS = -std=c++1y -stdlib=libc++ -lc++abi -lpthread
 ASANFLAGS = -fsanitize=address -fno-omit-frame-pointer
 
 all: $(EXE) $(EXE)-asan
