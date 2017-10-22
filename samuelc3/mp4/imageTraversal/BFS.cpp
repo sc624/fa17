@@ -18,7 +18,10 @@ using namespace cs225;
  */
 BFS::BFS(const PNG & png, const Point & start, double tolerance) {
   /** @todo [Part 1] */
-  
+  this->png = png;
+  this->start = start;
+  this->tolerance = tolerance;
+  add(start);
 }
 
 /**
@@ -42,6 +45,7 @@ ImageTraversal::Iterator BFS::end() {
  */
 void BFS::add(const Point & point) {
   /** @todo [Part 1] */
+  return q.push(point);
 }
 
 /**
@@ -49,7 +53,9 @@ void BFS::add(const Point & point) {
  */
 Point BFS::pop() {
   /** @todo [Part 1] */
-  return Point(0, 0);
+  Point que = q.front();
+  q.pop();
+  return que;
 }
 
 /**
@@ -57,7 +63,7 @@ Point BFS::pop() {
  */
 Point BFS::peek() const {
   /** @todo [Part 1] */
-  return Point(0, 0);
+  return q.front();
 }
 
 /**
@@ -65,5 +71,5 @@ Point BFS::peek() const {
  */
 bool BFS::empty() const {
   /** @todo [Part 1] */
-  return true;
+  return q.empty();
 }

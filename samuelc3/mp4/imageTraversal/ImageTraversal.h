@@ -22,19 +22,24 @@ public:
   /**
    * A forward iterator through an ImageTraversal.
    */
+  
   class Iterator : std::iterator<std::forward_iterator_tag, Point> {
   public:
     Iterator();
-
+    Iterator(const PNG &png, double tolerance, const Point &start, bool checkDFS);
     Iterator & operator++();
     Point operator*();
     bool operator!=(const Iterator &other);
 
   private:
-
+    PNG png;
+    double tolerance;
+    Point start;
+    bool checkDFS;
+    vector<vector<bool>> visitedPoints;
   };
 
-  static double calculateDeltaPublic(const HSLAPixel & p1, const HSLAPixel & p2);  
+  static double calculateDeltaPublic(const HSLAPixel & p1, const HSLAPixel & p2);
 
   virtual Iterator begin() = 0;
   virtual Iterator end() = 0;

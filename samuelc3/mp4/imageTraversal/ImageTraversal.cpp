@@ -7,6 +7,7 @@
 #include "../Point.h"
 
 #include "ImageTraversal.h"
+using namespace std;
 
 /**
  * Calculates a metric for the difference between two pixels, used to
@@ -36,7 +37,19 @@ double ImageTraversal::calculateDeltaPublic(const HSLAPixel & p1, const HSLAPixe
  * Default iterator constructor.
  */
 ImageTraversal::Iterator::Iterator() {
-  /** @todo [Part 1] */
+
+}
+ImageTraversal::Iterator::Iterator(const PNG &png, double tolerance, const Point &start, bool checkDFS) {
+  this->png = png;
+  this->checkDFS = checkDFS;
+  this->tolerance = tolerance;
+  this->start = start;
+  visitedPoints = vector<vector<bool>>(png.width(), vector<bool>(png.height()));
+  for(unsigned i = 0; i < png.width(); i++){
+    for(unsigned j = 0; j < png.height(); j++){
+        visitedPoints[i][j] = false;
+    }
+  }
 }
 
 /**
@@ -46,6 +59,24 @@ ImageTraversal::Iterator::Iterator() {
  */
 ImageTraversal::Iterator & ImageTraversal::Iterator::operator++() {
   /** @todo [Part 1] */
+  // if(point.x < png.width() && point.y < png.height()){
+  //   if(calculateDeltaPublic(*png.getPixel(point.x,point.y),*png.getPixel(prev.x, prev.y)) < tolerance){
+  //   s.push(point);
+  //   prev = point;
+  //   }
+  // }
+  // else
+  //   return;
+  //   add(Point(point.x+1, point.y));
+  //   add(Point(point.x, point.y+1));
+  //   add(Point(point.x-1, point.y));
+  //   add(Point(point.x, point.y-1));
+  if(checkDFS == 1){
+    DFS pls = newDFS();
+    pls.begin();
+
+  }
+
   return *this;
 }
 
@@ -66,5 +97,9 @@ Point ImageTraversal::Iterator::operator*() {
  */
 bool ImageTraversal::Iterator::operator!=(const ImageTraversal::Iterator &other) {
   /** @todo [Part 1] */
-  return false;
+  if () {
+    /* code */
+  }
+  else
+    return false;
 }
