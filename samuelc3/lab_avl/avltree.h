@@ -1,17 +1,3 @@
-/**
- * @file avltree.h
- * Declaraction of the AVLTree class. You will probably need to modify this
- *  file to add helper functions.
- *
- * @author Daniel Hoodin in Spring 2008.
- * @author Modified by Kyle Johnson in Fall 2010.
- * @author Modified by Sean Massung in Summer 2012:
- *  - added templates
- *  - CRTP tree printing
- *  - doxygen
- * @author Modified by Ziwei Ba in Fall 2017.
- *  - added inorder printing
- */
 
 #ifndef AVLTREE_H
 #define AVLTREE_H
@@ -238,10 +224,11 @@ class AVLTree
     /** This variable gets the inorder traversal of the AVL tree. **/
     vector<K> inorder;
     Node * getIOP(Node*, bool);
-    void removeNode(Node *& root, K key);
+    void removeN(Node *& root, K key);
     Node * getMax(stack<Node*>);
     Node * getMin(stack<Node*>);
     void rebalancekey(Node*&, const K&);
+    int getHeightBalance(Node* root);
 };
 
 #include "avltree_given.cpp"
