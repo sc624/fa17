@@ -26,7 +26,7 @@ void List<T>::clear() {
     tail_ = head_ -> next;
     delete head_;
     head_ = tail_;
-    } 
+    }
   }
 
 /**
@@ -45,7 +45,7 @@ void List<T>::insertFront(T const& ndata) {
   if(head_ == NULL){
     poo -> next = NULL;
     tail_ = poo;
-  }  
+  }
   else{
     poo->next = head_;
     head_ -> prev = poo;
@@ -60,7 +60,7 @@ void List<T>::insertFront(T const& ndata) {
         tail_-> next = NULL;
         tail_->prev = NULL;
   }
-  head_ -> prev = new ListNode(ndata);  
+  head_ -> prev = new ListNode(ndata);
   ListNode * knew = head_;
     head_ = head_ -> prev;
     head_ -> prev = NULL;
@@ -74,17 +74,6 @@ void List<T>::insertFront(T const& ndata) {
  * Inserts a new node at the back of the List.
  * This function **SHOULD** create a new ListNode.
  *
-  ://github.com/dyjhhh/cs225/blob/master/mp3/list.cppistNode * poo = new ListNode(ndata);
-    poo -> prev = NULL;
-  if(head_ == NULL){
-    poo -> next = NULL;
-    poo = head_;
-  }  
-  else{
-    poo->next = head_;
-    head -> prev = poo;
-  }
-  head_ = poo
  * @param ndata The data to be inserted.
  */
 template <class T>
@@ -95,7 +84,7 @@ void List<T>::insertBack(const T& ndata) {
   if(tail_ == NULL){
     pool -> prev = NULL;
     head_ = pool;
-  }  
+  }
   else{
     pool->prev = tail_;
     tail_ -> next = pool;
@@ -110,7 +99,7 @@ void List<T>::insertBack(const T& ndata) {
 template <class T>
 void List<T>::reverse() {
   reverse(head_, tail_);
-    
+
 }
 
 /**
@@ -139,7 +128,7 @@ void List<T>::reverse(ListNode*& startPoint, ListNode*& endPoint) {
     current = startPointnext;
     startPointnext = startPointnext -> next;
 
-   } 
+   }
        startPoint -> next = endPointnext;
       if(endPointnext != NULL)
             endPointnext -> prev = startPoint;
@@ -172,7 +161,7 @@ void List<T>::reverseNth(int n) {
     ListNode *bink = head_;
     ListNode *newhead = head_;
     ListNode *newtail = NULL;
-    
+
     int num = n;
     while(bink != NULL){
         if(num == 0){
@@ -226,7 +215,7 @@ void List<T>::waterfall() {
     }
     all = NULL;
     start = NULL;
-    
+
 }
 
 /**
@@ -338,15 +327,15 @@ typename List<T>::ListNode* List<T>::merge(ListNode* first, ListNode* second) {
 
     ListNode * temp = NULL;
     ListNode * temp1 = first, * temp2 = second;
-    
+
     if(first->data < second->data) {
         temp = first;
         temp1 = first->next;
     } else {
         temp = second;
-        temp2 = second->next; 
+        temp2 = second->next;
     }
-   
+
     while(temp2 != NULL || temp1 != NULL) {
         if( (temp1 != NULL && temp1->data < temp2->data)|| temp2 == NULL) {
             temp->next = temp1;
