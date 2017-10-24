@@ -5,6 +5,9 @@
 #include "../cs225/HSLAPixel.h"
 #include "../cs225/PNG.h"
 #include "../Point.h"
+#include <stack>
+#include <queue>
+#include <cmath>
 
 using namespace cs225;
 
@@ -22,21 +25,19 @@ public:
   /**
    * A forward iterator through an ImageTraversal.
    */
-  
+
   class Iterator : std::iterator<std::forward_iterator_tag, Point> {
   public:
     Iterator();
-    Iterator(const PNG &png, double tolerance, const Point &start, bool checkDFS);
     Iterator & operator++();
     Point operator*();
     bool operator!=(const Iterator &other);
 
+    Iterator(ImageTraversal *, vector<Point>::iterator, vector <Point>::iterator);
+    vector <Point>::iterator iteratorBegin;
   private:
-    PNG png;
-    double tolerance;
-    Point start;
-    bool checkDFS;
-    vector<vector<bool>> visitedPoints;
+    vector <Point>::iterator iteratorEnd;
+    ImageTraversal* traversed;
   };
 
   static double calculateDeltaPublic(const HSLAPixel & p1, const HSLAPixel & p2);

@@ -9,7 +9,8 @@ using namespace cs225;
 /**
  * Picks the color for pixel (x, y).
  */
-HSLAPixel MyColorPicker::getColor(unsigned x, unsigned y) {
-  /* @todo [Part 3] */
-  return HSLAPixel();
+ MyColorPicker::MyColorPicker(HSLAPixel color) : color(color) { }
+
+ HSLAPixel MyColorPicker::getColor(unsigned x, unsigned y) {
+   return color;
 }

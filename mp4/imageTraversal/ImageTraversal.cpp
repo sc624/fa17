@@ -28,28 +28,19 @@ double ImageTraversal::calculateDelta(const HSLAPixel & p1, const HSLAPixel & p2
   return sqrt( (h*h) + (s*s) + (l*l) );
 }
 
-
-double ImageTraversal::calculateDeltaPublic(const HSLAPixel & p1, const HSLAPixel & p2){
+double ImageTraversal::calculateDeltaPublic(const HSLAPixel & p1, const HSLAPixel & p2) {
   return calculateDelta(p1, p2);
 }
-
 /**
  * Default iterator constructor.
  */
 ImageTraversal::Iterator::Iterator() {
-
+  traversed = NULL;
 }
-ImageTraversal::Iterator::Iterator(const PNG &png, double tolerance, const Point &start, bool checkDFS) {
-  this->png = png;
-  this->checkDFS = checkDFS;
-  this->tolerance = tolerance;
-  this->start = start;
-  visitedPoints = vector<vector<bool>>(png.width(), vector<bool>(png.height()));
-  for(unsigned i = 0; i < png.width(); i++){
-    for(unsigned j = 0; j < png.height(); j++){
-        visitedPoints[i][j] = false;
-    }
-  }
+ImageTraversal::Iterator::Iterator(ImageTraversal * traversed, vector<Point>::iterator iteratorBegin, vector<Point>::iterator iteratorEnd) {
+  this->iteratorEnd = iteratorEnd;
+  this->iteratorBegin = iteratorBegin;
+  this->traversed = traversed;
 }
 
 /**
@@ -59,24 +50,10 @@ ImageTraversal::Iterator::Iterator(const PNG &png, double tolerance, const Point
  */
 ImageTraversal::Iterator & ImageTraversal::Iterator::operator++() {
   /** @todo [Part 1] */
-  // if(point.x < png.width() && point.y < png.height()){
-  //   if(calculateDeltaPublic(*png.getPixel(point.x,point.y),*png.getPixel(prev.x, prev.y)) < tolerance){
-  //   s.push(point);
-  //   prev = point;
-  //   }
-  // }
-  // else
-  //   return;
-  //   add(Point(point.x+1, point.y));
-  //   add(Point(point.x, point.y+1));
-  //   add(Point(point.x-1, point.y));
-  //   add(Point(point.x, point.y-1));
-  if(checkDFS == 1){
-    DFS pls = newDFS();
-    pls.begin();
 
-  }
-
+  if(iteratorEnd != iteratorBegin)
+    iteratorBegin++;
+  traversed->pop();
   return *this;
 }
 
@@ -87,7 +64,7 @@ ImageTraversal::Iterator & ImageTraversal::Iterator::operator++() {
  */
 Point ImageTraversal::Iterator::operator*() {
   /** @todo [Part 1] */
-  return Point(0, 0);
+  return *iteratorBegin;
 }
 
 /**
@@ -97,8 +74,8 @@ Point ImageTraversal::Iterator::operator*() {
  */
 bool ImageTraversal::Iterator::operator!=(const ImageTraversal::Iterator &other) {
   /** @todo [Part 1] */
-  if () {
-    /* code */
+  if (!(iteratorBegin == other.iteratorBegin)) {
+    return true;
   }
   else
     return false;

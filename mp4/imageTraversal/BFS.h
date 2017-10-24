@@ -29,7 +29,9 @@ public:
   bool empty() const;
 
 private:
-
+  vector<vector<bool>> visitedPoints;
+  vector<Point> visitedPath;
+  vector<Point>::iterator iteratorEnd;
   queue<Point> q;
   PNG png;
   Point start;

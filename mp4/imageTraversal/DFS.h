@@ -5,6 +5,7 @@
 #include <cmath>
 #include <list>
 #include <stack>
+#include <queue>
 
 #include "../cs225/PNG.h"
 #include "../Point.h"
@@ -29,6 +30,9 @@ public:
   bool empty() const;
 
 private:
+  vector<vector<bool>> visitedPoints;
+  vector<Point> visitedPath;
+  vector<Point>::iterator iteratorEnd;
   stack<Point> s;
   PNG png;
   Point start;
