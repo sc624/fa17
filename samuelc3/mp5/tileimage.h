@@ -1,9 +1,6 @@
 /**
- * @file tileimage.h
+ * tileimage.h (v2)
  * Definition of the TileImage class.
- * 
- * @author Wade Fagen-Ulmschneider (http://waf.cs.illinois.edu/)
- * @date Fall 2017
  */
 
 #ifndef TILEIMAGE_H
