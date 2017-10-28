@@ -6,13 +6,13 @@ RESULTS_DIR = results
 
 OBJS_BTREE_STUDENT = test_btree.o
 OBJS_RACER_PROVIDED = dict_racer.o
-OBJS_TEST = tests/basic.o 
+OBJS_TEST = tests/basic.o
 
 CXX = clang++
 LD = clang++
 WARNINGS = -pedantic -Wall -Werror -Wfatal-errors -Wextra -Wno-unused-parameter -Wno-unused-variable
 CXXFLAGS = -std=c++1y -stdlib=libc++ -g -O0 $(WARNINGS) -MMD -MP -c
-LDFLAGS = -std=c++1y -stdlib=libc++ -lpng -lc++abi -lpthread
+LDFLAGS = -std=c++1y -stdlib=libc++ -lc++abi -lpthread
 ASANFLAGS = -fsanitize=address -fno-omit-frame-pointer
 
 all: $(EXE_BTREE) $(EXE_BTREE)-asan \
