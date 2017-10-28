@@ -1,7 +1,7 @@
 /**
- * @file tileimage.cpp
+ * tileimage.cpp (v2)
  * Impl of the TileImage class.
- * 
+ *
  * @author Wade Fagen-Ulmschneider (http://waf.cs.illinois.edu/)
  * @date Fall 2017
  */
@@ -53,26 +53,29 @@ PNG TileImage::cropSourceImage(const PNG& source) {
 }
 
 HSLAPixel TileImage::calculateAverageColor() const {
-  double h_sin = 0, h_cos = 0, s = 0, l = 0;
+    double h_sin = 0, h_cos = 0, s = 0, l = 0;
 
-  for (unsigned y = 0; y < image_.height(); y++) {
-    for (unsigned x = 0; x < image_.width(); x++) {
-      HSLAPixel & pixel = *(image_.getPixel(x, y));
-      double h_rad = pixel.h * M_PI / 180;
-      h_sin += sin( h_rad );
-      h_cos += cos( h_rad );
-      s += pixel.s;
-      l += pixel.l;
+    for (unsigned y = 0; y < image_.height(); y++) {
+        for (unsigned x = 0; x < image_.width(); x++) {
+            HSLAPixel & pixel = *(image_.getPixel(x, y));
+            double h_rad = pixel.h * M_PI / 180;
+            h_sin += sin( h_rad );
+            h_cos += cos( h_rad );
+            s += pixel.s;
+            l += pixel.l;
+        }
     }
-  }
 
-  unsigned numPixels = image_.width() * image_.height();
+    unsigned numPixels = image_.width() * image_.height();
 
-  HSLAPixel color;
-  color.h = atan2(h_sin, h_cos) * 180 / M_PI;
-  color.s = s / numPixels;
-  color.l = l / numPixels;
-  return color;
+    HSLAPixel color;
+    color.h = atan2(h_sin, h_cos) * 180 / M_PI;
+    if (color.h < 0) {
+        color.h += 360;
+    }
+    color.s = s / numPixels;
+    color.l = l / numPixels;
+    return color;
 }
 
 void TileImage::paste(PNG& canvas, int startX, int startY, int resolution) const {
@@ -110,7 +113,7 @@ void TileImage::paste(PNG& canvas, int startX, int startY, int resolution) const
 }
 
 HSLAPixel TileImage::getScaledPixelDouble(double startX, double endX,
-                                          double startY, double endY) const
+        double startY, double endY) const
 {
     double leftFrac = 1.0 - frac(startX);
     double rightFrac = frac(endX);
@@ -146,33 +149,39 @@ HSLAPixel TileImage::getScaledPixelDouble(double startX, double endX,
 
     HSLAPixel color;
     color.h = atan2(h_sin, h_cos) * 180 / M_PI;
+    if (color.h < 0) {
+        color.h += 360;
+    }
     color.s = s / totalPixels;
     color.l = l / totalPixels;
     return color;
 }
 
 HSLAPixel TileImage::getScaledPixelInt(int startXint, int endXint,
-                                       int startYint, int endYint) const
+        int startYint, int endYint) const
 {
-  double h_sin = 0, h_cos = 0, s = 0, l = 0;
-  double totalPixels = 0;
+    double h_sin = 0, h_cos = 0, s = 0, l = 0;
+    double totalPixels = 0;
 
-  for (int x = startXint; x < endXint; x++) {
-    for (int y = startYint; y < endYint; y++) {
-      HSLAPixel & pixel = *(image_.getPixel(x, y));
-      double h_rad = pixel.h * M_PI / 180;
-      h_sin += sin( h_rad );
-      h_cos += cos( h_rad );
-      s += pixel.s;
-      l += pixel.l;
+    for (int x = startXint; x < endXint; x++) {
+        for (int y = startYint; y < endYint; y++) {
+            HSLAPixel & pixel = *(image_.getPixel(x, y));
+            double h_rad = pixel.h * M_PI / 180;
+            h_sin += sin( h_rad );
+            h_cos += cos( h_rad );
+            s += pixel.s;
+            l += pixel.l;
 
-      totalPixels++;
+            totalPixels++;
+        }
     }
-  }
 
-  HSLAPixel color;
-  color.h = atan2(h_sin, h_cos) * 180 / M_PI;
-  color.s = s / totalPixels;
-  color.l = l / totalPixels;
-  return color;
+    HSLAPixel color;
+    color.h = atan2(h_sin, h_cos) * 180 / M_PI;
+    if (color.h < 0) {
+        color.h += 360;
+    }
+    color.s = s / totalPixels;
+    color.l = l / totalPixels;
+    return color;
 }

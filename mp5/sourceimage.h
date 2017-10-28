@@ -1,17 +1,14 @@
-// TODO: Mark waf
-
 /**
- * @file sourceimage.h
+ * sourceimage.h (v2)
  *
  * Definition of SourceImage class.
  *
- * @authors
- * Wade Fagen-Ulmschneider (http://waf.cs.illinois.edu/)
- * Jack Toole
- * Matt Sachtler
- * Scott Wegner
+ * @author Jack Toole
+ * @author Matt Sachtler
+ * @author Scott Wegner
  *
- * @date Fall 2017
+ * Developed for CS225 PhotoMosaic MP, Fall 2008
+ * Rewritten Fall 2011 by Jack Toole
  */
 
 #ifndef _SOURCEIMAGE_H
