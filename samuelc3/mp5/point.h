@@ -6,7 +6,7 @@
  * Wade Fagen-Ulmschneider (http://waf.cs.illinois.edu/)
  * Arman Tajback
  * Matt Sachtler
- * 
+ *
  * @date Fall 2017
  */
 

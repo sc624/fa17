@@ -230,8 +230,7 @@ class KDTree
     /** This is your KDTree representation. Modify this vector to create a
      * KDTree. */
     vector<Point<Dim>> points;
-
-    /** Helper function for grading */
+      /** Helper function for grading */
     int getPrintData(int low, int high) const;
 
     /** Helper function for grading */
@@ -241,7 +240,9 @@ class KDTree
     /**
      * @todo Add your helper functions here.
      */
-
+     void KDTreeHelper(int rightidx, int leftidx, int dimension);
+     void quickSelect(int rightidx, int leftidx, int mid_idx, int dimension);
+     int partition(int rightidx, int leftidx, int pivot_idx, int dimension);
 };
 
 #include "kdtree.cpp"
