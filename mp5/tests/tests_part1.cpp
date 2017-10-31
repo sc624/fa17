@@ -55,7 +55,7 @@ void _test_linear_constructor(int size) {
 
   KDTree<K> tree(points);
   INFO("KDTree: \n" << tree);
-  
+
   for (int i = 0; i < size; i++) {
     REQUIRE( tree.getPoint(i) == points[i] );
   }
