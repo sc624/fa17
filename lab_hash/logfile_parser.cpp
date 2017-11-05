@@ -61,6 +61,39 @@ LogfileParser::LogfileParser(const string& fname) : whenVisitedTable(256)
 
         // otherwise parse the line and update the hash tables and vector
         LogLine ll(line);
+
+        // string key = 11.customer;
+        // key = key + " ";
+        // key = key + 11.url;
+        // time_t = 11.date;
+        //
+        // if (whenVisitedTable.keyExists(key)){
+        //   if (whenVisitedTable[key] > date)
+        //     whenVisitedTable[key] = date;
+        // }
+        //   else
+        //     whenVisitedTable[key] = date;
+        // }
+        //
+        // if(!pageVisitedTable.keyExists(ll.url){
+        //   uniqueURLs.push_back(ll.url);
+        //   pageVisitedTable[ll.url] = true;
+        // }
+        string unique = ll.url;
+		string new_key = ll.customer.substr(1,ll.customer.size()-3);
+		new_key.append(unique);
+		if(whenVisitedTable.keyExists(new_key))
+		{
+			if(whenVisitedTable[new_key] < ll.date)
+			   whenVisitedTable[new_key]= ll.date;
+		}
+		else
+			whenVisitedTable.insert(new_key, ll.date);
+
+		if(!pageVisitedTable.keyExists(unique)){
+			uniqueURLs.push_back(unique);
+    }
+		pageVisitedTable[unique] = true;
         /**
          * @todo Finish implementing this function.
          *
@@ -86,10 +119,14 @@ bool LogfileParser::hasVisited(const string& customer, const string& url) const
      * @todo Implement this function.
      */
 
-    (void) customer; // prevent warnings... When you implement this function, remove this line.
-    (void) url;      // prevent warnings... When you implement this function, remove this line.
-
-    return true; // replaceme
+    // (void) customer; // prevent warnings... When you implement this function, remove this line.
+    // (void) url;      // prevent warnings... When you implement this function, remove this line.
+    //
+    // return true; // replaceme
+    string unique = url;
+    string key = customer.substr(1, customer.size()-3);
+    key.append(unique);
+    return whenVisitedTable.find(key);
 }
 
 /**
@@ -109,10 +146,14 @@ time_t LogfileParser::dateVisited(const string& customer,
      * @todo Implement this function.
      */
 
-    (void) customer; // prevent warnings... When you implement this function, remove this line.
-    (void) url;      // prevent warnings... When you implement this function, remove this line.
+     string unique = url;
+     string key = customer.substr(1, customer.size()-3);
+  	 key.append(unique);
+     return whenVisitedTable.find(key);
+    // (void) customer; // prevent warnings... When you implement this function, remove this line.
+    // (void) url;      // prevent warnings... When you implement this function, remove this line.
 
-    return time_t(); // replaceme
+    // return time_t(); // replaceme
 }
 
 /**
