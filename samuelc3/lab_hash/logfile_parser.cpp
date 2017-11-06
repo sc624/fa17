@@ -62,23 +62,6 @@ LogfileParser::LogfileParser(const string& fname) : whenVisitedTable(256)
         // otherwise parse the line and update the hash tables and vector
         LogLine ll(line);
 
-        // string key = 11.customer;
-        // key = key + " ";
-        // key = key + 11.url;
-        // time_t = 11.date;
-        //
-        // if (whenVisitedTable.keyExists(key)){
-        //   if (whenVisitedTable[key] > date)
-        //     whenVisitedTable[key] = date;
-        // }
-        //   else
-        //     whenVisitedTable[key] = date;
-        // }
-        //
-        // if(!pageVisitedTable.keyExists(ll.url){
-        //   uniqueURLs.push_back(ll.url);
-        //   pageVisitedTable[ll.url] = true;
-        // }
         string unique = ll.url;
 		string new_key = ll.customer.substr(1,ll.customer.size()-3);
 		new_key.append(unique);
