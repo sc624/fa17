@@ -96,60 +96,64 @@ Point<Dim> KDTree<Dim>::findNearestNeighbor(const Point<Dim>& query) const
     /**
      * @todo Implement this function!
      */
-     return points[findNearestNeighborHelper(query, 0, (1 - points.size()) / 2, 0, points.size()-1)];
+     return findNearestNeighborHelper(query, 0, 0, points.size()-1, points[(points.size()-1)/2],points[(points.size()-1)/2]);
 }
 
 /*
 Helper function to findNearestNeighbor that
  */
 template <int Dim>
-int KDTree<Dim>::findNearestNeighborHelper(const Point<Dim>& query, int currentDimension, int current, int left, int right) const
+Point<Dim> KDTree<Dim>::findNearestNeighborHelper(const Point<Dim> &query, int dimension, int left, int right, const Point<Dim> &current, Point<Dim> end) const
 {
-  //Base case
-  if(left >= right)
-    return current;
+  int newD = dimension;
+  int median1 = (left + right)/2;
+  int median2;
+  int distance = 0;
+      if(dimension >= Dim) {
+        newD = 0;
+        dimension = 0;
+      }
 
-  while (currentDimension >= Dim){
-	  currentDimension -= Dim;
-  }
+      end = current;
 
-  int distance = (points[current][currentDimension]-query[currentDimension]) * (points[current][currentDimension]-query[currentDimension]);
-  int currentBest = current;
-  int temp = current;
+      if(right != left) {
+        bool hi = true;
+        if (shouldReplace(query, end, points[median1]))
+          end = points[median1];
+        if (median1 > left) {
+          if(smallerDimVal(query, points[median1], dimension)) {
+            median2 = (median1+right)/2;
+            hi = true;
+            end = findNearestNeighborHelper( query, newD+1, left, median1-1, current, end);
+          }
+        }
+        if (median1 < right) {
+          if(smallerDimVal(points[median1], query, dimension)==true) {
+            hi = false;
+            median2 = (left-1+median1)/2;
+            end = findNearestNeighborHelper( query, newD+1, median1+1, right, current, end);
+          }
+        }
 
+        for (int i = 0; i < Dim; i++){
+          distance = distance + (query[i]-end[i])*(query[i]-end[i]);
+        }
 
-
-  if (smallerDimVal(query, points[current], currentDimension)){
-    currentBest = findNearestNeighborHelper(query, currentDimension+1, (((current-1) - left)/2)+left, left, current-1);
-    if (shouldReplace(query, points[currentBest], points[current]) == true)
-      currentBest = current;
-    int radius;
-    for (int i = 0; i < Dim; i++){
-        radius = radius + (points[currentBest][i] - query[i]) * (points[currentBest][i] - query[i]);
-    }
-
-    if (radius >= distance)
-    {
-
-      temp = findNearestNeighborHelper(query, currentDimension+1, ((right - (current + 1))/2)+current+1, current+1, right);
-      if (shouldReplace(query, points[currentBest], points[temp]) == true)
-        currentBest = temp;
-    }
-  }
-
-  else{
-    currentBest = findNearestNeighborHelper(query, currentDimension+1, ((right - (current+1))/2)+current+1, current+1, right);
-    if (shouldReplace(query, points[currentBest], points[current]) == true)
-      currentBest = current;
-    int radius;
-    for (int i = 0; i < Dim; i++){
-        radius = radius + (points[currentBest][i] - query[i]) * (points[currentBest][i] - query[i]);
-    }
-    if (radius >= distance) {
-      temp = findNearestNeighborHelper(query, currentDimension+1, (((current-1) - left)/2)+left, left, current-1);
-      if (shouldReplace(query, points[currentBest], points[temp]) == true)
-        currentBest = temp;
-    }
-  }
-  return currentBest;
+        if ((points[median1][dimension] - query[dimension])*(points[median1][dimension] - query[dimension]) <= distance && hi == true && right > median1) {
+          median1++;
+          newD++;
+          end = findNearestNeighborHelper(query, newD, median1, right, end, end);
+        } else if ((points[median1][dimension] - query[dimension])*(points[median1][dimension] - query[dimension]) <= distance && hi == false && left < median1) {
+          median1--;
+          newD++;
+          end = findNearestNeighborHelper(query, newD, left, median1, end, end);
+        }
+      }
+      else {
+        if(shouldReplace(query, current, points[left]) == false)
+          return current;
+        else if(shouldReplace(query, current, points[left]) == true)
+          return points[left];
+      }
+      return end;
 }
