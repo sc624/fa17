@@ -243,6 +243,7 @@ class KDTree
      void KDTreeHelper(int rightidx, int leftidx, int dimension);
      void quickSelect(int rightidx, int leftidx, int mid_idx, int dimension);
      int partition(int rightidx, int leftidx, int pivot_idx, int dimension);
+     int findNearestNeighborHelper(const Point<Dim>& query, int currentDimension, int current, int left, int right) const;
 };
 
 #include "kdtree.cpp"
