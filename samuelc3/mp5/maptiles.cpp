@@ -21,10 +21,11 @@ MosaicCanvas* mapTiles(SourceImage const& theSource,
 	for(size_t i = 0; i < theTiles.size(); i++)
 	{
 		HSLAPixel tempPixel = theTiles[i].getAverageColor();
-		double setPoint [3];
+		double setPoint [4];
 		setPoint [0]= tempPixel.h;
 		setPoint [1]= tempPixel.s;
 		setPoint [2]= tempPixel.l;
+    setPoint [3]= tempPixel.a;
 		Point <3> tempPoint(setPoint);
 		pixelVector.push_back(tempPoint);
 	}
@@ -39,10 +40,11 @@ MosaicCanvas* mapTiles(SourceImage const& theSource,
 		for(int columnNumber = 0; columnNumber < columns; columnNumber++)
 		{
 			HSLAPixel originalPixel = theSource.getRegionColor(rowNumber, columnNumber);
-			double pixelArray [3];
+			double pixelArray [4];
 			pixelArray [0]= originalPixel.h;
 			pixelArray [1]= originalPixel.s;
 			pixelArray [2]= originalPixel.l;
+      pixelArray [3]= originalPixel.a;
 			Point <3> singlePixel(pixelArray);
 			Point <3> properImage = sourceTree.findNearestNeighbor(singlePixel);
 			int findIndex = indexMap[properImage];
