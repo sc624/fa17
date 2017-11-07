@@ -13,38 +13,43 @@ using namespace std;
 MosaicCanvas* mapTiles(SourceImage const& theSource,
                        vector<TileImage> const& theTiles)
 {
-  vector<Point<3>> color;
-  vector< TileImage >::iterator it;
-  map<Point<3>, TileImage> Map;
+  int rows = theSource.getRows();
+	int columns = theSource.getColumns();
+	MosaicCanvas * finalMosaic = new MosaicCanvas(rows, columns);
+	vector <Point<3> > pixelVector;
+	map <Point<3>, int> indexMap;
+	for(size_t i = 0; i < theTiles.size(); i++)
+	{
+		HSLAPixel tempPixel = theTiles[i].getAverageColor();
+		double setPoint [3];
+		setPoint [0]= tempPixel.h;
+		setPoint [1]= tempPixel.s;
+		setPoint [2]= tempPixel.l;
+		Point <3> tempPoint(setPoint);
+		pixelVector.push_back(tempPoint);
+	}
+	for(size_t i = 0; i < pixelVector.size(); i++)
+	{
+		indexMap[pixelVector[i]] = i;
+	}
+	KDTree <3> sourceTree(pixelVector);
 
-  for (size_t i = 0; i < theTiles.size(); i++)
-    {
-        HSLAPixel pixel = theTiles.at(i).getAverageColor();
-        Point<3> pp(pixel.h, pixel.s, pixel.l, pixel.a);
+	for(int rowNumber = 0; rowNumber < rows; rowNumber++)
+	{
+		for(int columnNumber = 0; columnNumber < columns; columnNumber++)
+		{
+			HSLAPixel originalPixel = theSource.getRegionColor(rowNumber, columnNumber);
+			double pixelArray [3];
+			pixelArray [0]= originalPixel.h;
+			pixelArray [1]= originalPixel.s;
+			pixelArray [2]= originalPixel.l;
+			Point <3> singlePixel(pixelArray);
+			Point <3> properImage = sourceTree.findNearestNeighbor(singlePixel);
+			int findIndex = indexMap[properImage];
+			TileImage findImage = theTiles[findIndex];
+			finalMosaic->setTile(rowNumber, columnNumber, findImage);
+		}
+	}
 
-        Map[pp] = theTiles.at(i);
-        color.push_back(pp);
-    }
-    KDTree<3>::KDTree tree(color);
-
-   int rows = theSource.getRows();
-   int cols = theSource.getColumns();
-   MosaicCanvas::MosaicCanvas *canvas = new MosaicCanvas(rows, cols);
-
-   //loop through each tile
-   for (int i = 0; i < rows; i++)
-   {
-       for (int j = 0; j < cols; j++)
-       {
-           HSLAPixel region = theSource.getRegionColor(i, j);
-           Point<3> regionPoint(region.h, region.s, region.l, region.a);
-           Point<3> closest = tree.findNearestNeighbor(regionPoint);
-           TileImage Tile = Map[closest];
-
-           canvas->setTile(i, j, Tile);
-       }
-   }
-
-   //return canvas
-   return canvas;
+	return finalMosaic;
 }
