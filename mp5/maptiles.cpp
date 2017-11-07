@@ -20,7 +20,7 @@ MosaicCanvas* mapTiles(SourceImage const& theSource,
   for (size_t i = 0; i < theTiles.size(); i++)
     {
         HSLAPixel pixel = theTiles.at(i).getAverageColor();
-        Point<3> pp(pixel.h, pixel.s, pixel.l);
+        Point<3> pp(pixel.h, pixel.s, pixel.l, pixel.a);
 
         Map[pp] = theTiles.at(i);
         color.push_back(pp);
@@ -37,7 +37,7 @@ MosaicCanvas* mapTiles(SourceImage const& theSource,
        for (int j = 0; j < cols; j++)
        {
            HSLAPixel region = theSource.getRegionColor(i, j);
-           Point<3> regionPoint(region.h, region.s, region.l);
+           Point<3> regionPoint(region.h, region.s, region.l, region.a);
            Point<3> closest = tree.findNearestNeighbor(regionPoint);
            TileImage Tile = Map[closest];
 
