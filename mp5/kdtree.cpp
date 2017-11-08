@@ -20,14 +20,14 @@ bool KDTree<Dim>::smallerDimVal(const Point<Dim> & first, const Point<Dim> & sec
 template<int Dim>
 bool KDTree<Dim>::shouldReplace(const Point<Dim> & target, const Point<Dim> & currentBest, const Point<Dim> & potential) const
 {
-	int currDistance = 0, potenDistance = 0;
+	double currDistance = 0, potenDistance = 0;
 	for(int i = 0; i < Dim; i++)
 		currDistance += (target[i]-currentBest[i])*(target[i]-currentBest[i]);
 	for(int i = 0; i < Dim; i++)
 		potenDistance += (target[i]-potential[i])*(target[i]-potential[i]);
-	if(currDistance != potenDistance)
-		return potenDistance < currDistance;
-	return potential < currentBest;
+	if(currDistance == potenDistance)
+		return potential < currentBest;
+	return potenDistance < currDistance;
 }
 
 template<int Dim>
@@ -53,48 +53,36 @@ template<int Dim>
 Point<Dim> KDTree<Dim>::findNearestNeighbor(const Point<Dim> & query) const
 {
 
-    bool check = true;
-    Point<Dim> currentBest;
-    NearestNeighborHelper(check, query, currentBest, 0, points.size() - 1, 0, 0);
+		int middle = ((points.size()-1)/2);
+    Point<Dim> currentBest = points[middle];
+    NearestNeighborHelper(query, currentBest, 0, points.size() - 1, 0);
 
     return currentBest;
 }
 
-//helper function to findNearestNeighbor that checks distances between points and organizes
+//helper function to findNearestNeighbor that checks distances between points and organizes;; first gets the middle and checks for leaf node
+//passes in points recursively
 template<int Dim>
-void KDTree<Dim>::NearestNeighborHelper(bool & check, const Point<Dim> & query, Point<Dim> & currentBest, int leftidx, int rightidx, int dimension, int dist) const
+Point<Dim> KDTree<Dim>::NearestNeighborHelper(const Point<Dim> & query, Point<Dim> & currentBest, int leftidx, int rightidx, int dimension) const
 {
-	if(leftidx >= rightidx){
-		if(check == true){
-				check = false;
-				currentBest = points[rightidx];
-		}
-		else{
-				if(shouldReplace(query, currentBest, points[leftidx]) == true)
-						currentBest = points[leftidx];
-		}
-		return;
-}
+	if(leftidx > rightidx){
 
- if(smallerDimVal(query, points[(leftidx + rightidx)/2], dimension) == false){
-	NearestNeighborHelper(check, query, currentBest, (leftidx + rightidx)/2 + 1, rightidx, (dimension + 1) % Dim, dist);
-	if(shouldReplace(query, currentBest, points[(leftidx + rightidx)/2])==true)
-		currentBest = points[(leftidx + rightidx)/2];
-	for(int i = 0; i < Dim; i++)
-		dist = dist + (currentBest[i]-query[i])*(currentBest[i]-query[i]);
-	if((points[(leftidx + rightidx)/2][dimension] - query[dimension]) * (points[(leftidx + rightidx)/2][dimension] - query[dimension]) <= dist)
-		NearestNeighborHelper(check, query, currentBest, leftidx, (leftidx + rightidx)/2 - 1, (dimension + 1) % Dim, dist);
+				currentBest = points[leftidx];
+				return currentBest;
 	}
-else{
-	NearestNeighborHelper(check, query, currentBest, leftidx, (leftidx + rightidx)/2 - 1, (dimension + 1)%Dim, dist);
-	if(shouldReplace(query, currentBest, points[(leftidx + rightidx)/2])==true)
-		currentBest = points[(leftidx + rightidx)/2];
-	for(int i = 0; i < Dim; i++)
-		dist = dist + (currentBest[i]-query[i])*(currentBest[i]-query[i]);
-	if((points[(leftidx + rightidx)/2][dimension] - query[dimension]) * ( points[(leftidx + rightidx)/2][dimension] - query[dimension]) <= dist)
-		NearestNeighborHelper(check, query, currentBest, (leftidx + rightidx)/2 + 1, rightidx, (dimension + 1)%Dim, dist);
-	}
-	return;
+
+	Point<Dim> leftTree = NearestNeighborHelper(query, currentBest, leftidx, ((leftidx + rightidx)/2)-1, (dimension + 1)%Dim);
+ 	Point<Dim> rightTree = NearestNeighborHelper(query, currentBest, ((leftidx + rightidx)/2)+1, rightidx, (dimension + 1)%Dim);
+ 	if(shouldReplace(query, currentBest, rightTree)){
+		currentBest = rightTree;
+ 	}
+ 	else if(shouldReplace(query, currentBest, leftTree)){
+		currentBest = leftTree;
+ 	}
+ 	else if(shouldReplace(query, currentBest, points[((leftidx + rightidx)/2)])){
+	 	currentBest = points[((leftidx + rightidx)/2)];
+ 	}
+ 	return currentBest;
 }
 
 //quick select sort function
