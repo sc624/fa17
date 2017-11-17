@@ -1,3 +1,4 @@
+
 /**
  * @file mosaiccanvas.h
  *
@@ -7,7 +8,7 @@
  * Jack Toole
  * Matt Sachtler
  * Scott Wegner
- * 
+ *
  * @date Fall 2008
  */
 
@@ -70,7 +71,7 @@ class MosaicCanvas
      *
      * @return 0 on success, or non-zero otherwise
      */
-    void setTile(int row, int column, const TileImage& img);
+    void setTile(int row, int column, TileImage *& img);
 
     /**
      * Retrieve the current TileImage for a particular
@@ -84,7 +85,7 @@ class MosaicCanvas
      * @return The current TileImage for a particular,
      * or the default TileImage if none is set.
      */
-    const TileImage& getTile(int row, int column) const;
+    TileImage * getTile(int row, int column);
 
     /**
      * Save the current MosaicCanvas as a file with
@@ -108,20 +109,20 @@ class MosaicCanvas
     /**
      * The actual matrix of Image data
      */
-    vector<TileImage> myImages;
+    vector<TileImage *> myImages;
 
-    TileImage& images(int x, int y);
-    const TileImage& images(int x, int y) const;
+    TileImage * images(int x, int y);
+    const TileImage * images(int x, int y) const;
 
     static uint64_t divide(uint64_t a, uint64_t b);
 };
 
-inline TileImage& MosaicCanvas::images(int row, int col)
-{
-    return myImages[row * columns + col];
-}
+ inline TileImage * MosaicCanvas::images(int row, int col)
+ {
+     return myImages[row * columns + col];
+ }
 
-inline const TileImage& MosaicCanvas::images(int row, int col) const
+inline const TileImage * MosaicCanvas::images(int row, int col) const
 {
     return myImages[row * columns + col];
 }

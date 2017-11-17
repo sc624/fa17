@@ -52,7 +52,7 @@ int MosaicCanvas::getColumns() const
     return columns;
 }
 
-void MosaicCanvas::setTile(int row, int column, const TileImage& i)
+void MosaicCanvas::setTile(int row, int column, TileImage *& i)
 {
     if (enableOutput) {
         cerr << "\rPopulating Mosaic: setting tile ("
@@ -60,10 +60,11 @@ void MosaicCanvas::setTile(int row, int column, const TileImage& i)
              << ")" << string(20, ' ') << "\r";
         cerr.flush();
     }
-    images(row, column) = i;
+    //images(row,column) = i;
+    myImages[row * columns + column] = i;
 }
 
-const TileImage& MosaicCanvas::getTile(int row, int column) const
+TileImage * MosaicCanvas::getTile(int row, int column)
 {
     return images(row, column);
 }
@@ -99,7 +100,7 @@ PNG MosaicCanvas::drawMosaic(int pixelsPerTile) const
                 cerr << "Error: resolution not constant: x: " << (endX - startX)
                      << " y: " << (endY - startY) << endl;
 
-            images(row, col).paste(mosaic, startX, startY, endX - startX);
+            images(row, col)->paste(mosaic, startX, startY, endX - startX);
         }
     }
     if (enableOutput) {
