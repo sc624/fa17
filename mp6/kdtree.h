@@ -2,11 +2,16 @@
  * @file kdtree.h
  * KDTree implementation using Points in k-dimensional space.
  *
- * @author Wade Fagen-Ulmschneider (http://waf.cs.illinois.edu/)
- * @date Fall 2017
- *
- * @authors Cinda Heeren, Jack Toole, Sean Massung
+ * @author Cinda Heeren
+ * @author Jack Toole
+ * @author Sean Massung
  * @date Spring 2009
+ *
+ * Revision history:
+ * 3/31/2009     Created
+ * 11/10/2009    Modified for MP6 Submission, Fall 2009
+ * July 2012     Modified by Sean Massung to remove points_index, forbid
+ *                 students from using std::sort, and generally clean up code
  */
 
 #ifndef _KDTREE_H_
@@ -42,7 +47,7 @@ class KDTree
      *     cout << smallerDimVal(a, b, 2) << endl; // should print false
      *     cout << smallerDimVal(a, b, 1) << endl; // based on operator<, this should be true
      *
-     * @todo This function is required for MP 5.1.
+     * @todo This function is required for MP 6.1.
      * @param first Point to compare.
      * @param second Second point to compare.
      * @param curDim Dimension these points are being compared in.
@@ -79,7 +84,7 @@ class KDTree
      *     cout << shouldReplace(target, currentBest3, possibleBest3) << endl;
      *      // based on operator<, this should be false
      *
-     * @todo This function is required for MP 5.1.
+     * @todo This function is required for MP 6.1.
      * @param target The Point we want to be close to.
      * @param currentBest The Point that is currently our closest Point
      *    to target.
@@ -143,7 +148,7 @@ class KDTree
      * that "select pivotIndex between left and right" means that you
      * should choose a midpoint between the left and right indices.
      *
-     * @todo This function is required for MP 5.1.
+     * @todo This function is required for MP 6.1.
      * @param newPoints The vector of points to build your KDTree off of.
      */
     KDTree(const vector<Point<Dim>>& newPoints);
@@ -155,8 +160,8 @@ class KDTree
      * returns the Point closest to it in the tree. We are defining
      * closest here to be the minimum Euclidean distance between elements.
      * Again, **if there are ties (this time in distance), they must be
-     * decided using Point::operator<().** Recall that an HSLAPixel is
-     * defined by three components: hue, saturation, and lightness.
+     * decided using Point::operator<().** Recall that an RGBAPixel is
+     * defined by three components: red, green, and blue.
      *
      * The findNearestNeighbor() search is done in two steps: a search to
      * find the smallest hyperrectangle that contains the target element,
@@ -193,11 +198,15 @@ class KDTree
      * You can assume that findNearestNeighbor will only be called on a
      * valid kd-tree.
      *
+     * @see Here is a reference we found quite useful in writing our kd-tree:
+     *  [Andrew Moore's KD-Tree Tutorial]
+     * (http://www.autonlab.org/autonweb/14665/version/2/part/5/data/moore-tutorial.pdf?branch=main&language=en).
+     *
      * @see There is [an example]
-     * https://courses.engr.illinois.edu/cs225/fa2017/mps/5/) on the KDTree spec
+     * (https://wiki.engr.illinois.edu/display/cs225/MP+6.1) on the KDTree spec
      * on the wiki.
      *
-     * @todo This function is required for MP 5.1.
+     * @todo This function is required for MP 6.1.
      * @param query The point we wish to find the closest neighbor to in the
      *  tree.
      * @return The closest point to a in the KDTree.
@@ -222,8 +231,6 @@ class KDTree
      * @param out The stream to print to
      */
     void gradingPrint(std::ostream& out) const;
-
-    /** Helper function for grading */
     Point<Dim> getPoint(unsigned index) const;
 
   private:
@@ -242,6 +249,11 @@ class KDTree
      * @todo Add your helper functions here.
      */
 
+    void buildTree(int dim, int left, int right);
+    void select(int dim, int left, int right, int k);
+    int partition(int dim, int left, int right, int pivotIndex);
+    int findNearest(const Point<Dim>& query, int dim, int left, int right) const;
+    double distanceSquared(const Point<Dim>& a, const Point<Dim>& b) const;
 };
 
 #include "kdtree.cpp"
