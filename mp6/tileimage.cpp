@@ -7,7 +7,7 @@
  * Jack Toole
  * Matt Sachtler
  * Scott Wegner
- * 
+ *
  * @date Fall 2017
  */
 
@@ -83,38 +83,42 @@ HSLAPixel TileImage::calculateAverageColor() const {
     return color;
 }
 
-void TileImage::paste(PNG& canvas, int startX, int startY, int resolution) const {
-    // If possible, avoid floating point comparisons. This helps ensure that
-    // students' photomosaic's are diff-able with solutions
-    if (getResolution() % resolution == 0) {
-        int scalingRatio = getResolution() / resolution;
+PNG * TileImage::resize(int resolution) const {
+  PNG * resizedPNG = new PNG(resolution, resolution);
+  if (getResolution() % resolution == 0) {
+      int scalingRatio = getResolution() / resolution;
+      for (int x = 0; x < resolution; x++) {
+          for (int y = 0; y < resolution; y++) {
+              int pixelStartX = (x)     * scalingRatio;
+              int pixelEndX   = (x + 1) * scalingRatio;
+              int pixelStartY = (y)     * scalingRatio;
+              int pixelEndY   = (y + 1) * scalingRatio;
 
-        for (int x = 0; x < resolution; x++) {
-            for (int y = 0; y < resolution; y++) {
-                int pixelStartX = (x)     * scalingRatio;
-                int pixelEndX   = (x + 1) * scalingRatio;
-                int pixelStartY = (y)     * scalingRatio;
-                int pixelEndY   = (y + 1) * scalingRatio;
+             *(resizedPNG->getPixel(x, y)) = getScaledPixelInt(pixelStartX, pixelEndX, pixelStartY, pixelEndY);
+          }
+      }
+  } else { // scaling is necessary
+      double scalingRatio = static_cast<double>(getResolution()) / resolution;
+      for (int x = 0; x < resolution; x++) {
+          for (int y = 0; y < resolution; y++) {
+              double pixelStartX = (double)(x)     * scalingRatio;
+              double pixelEndX   = (double)(x + 1) * scalingRatio;
+              double pixelStartY = (double)(y)     * scalingRatio;
+              double pixelEndY   = (double)(y + 1) * scalingRatio;
 
-                *(canvas.getPixel(startX + x, startY + y)) =
-                    getScaledPixelInt(pixelStartX, pixelEndX, pixelStartY, pixelEndY);
-            }
-        }
-    } else { // scaling is necessary
-        double scalingRatio = static_cast<double>(getResolution()) / resolution;
+              *(resizedPNG->getPixel(x,y)) = getScaledPixelInt(pixelStartX, pixelEndX, pixelStartY, pixelEndY);
+          }
+      }
+  }
+  return resizedPNG;
+}
 
-        for (int x = 0; x < resolution; x++) {
-            for (int y = 0; y < resolution; y++) {
-                double pixelStartX = (double)(x)     * scalingRatio;
-                double pixelEndX   = (double)(x + 1) * scalingRatio;
-                double pixelStartY = (double)(y)     * scalingRatio;
-                double pixelEndY   = (double)(y + 1) * scalingRatio;
-
-                *(canvas.getPixel(startX + x, startY + y)) =
-                    getScaledPixelDouble(pixelStartX, pixelEndX, pixelStartY, pixelEndY);
-            }
-        }
+void TileImage::paste(int startX, int startY, int resolution, PNG * resized, PNG& canvas) const {
+  for (int x = 0; x < resolution; x++) {
+    for (int y = 0; y < resolution; y++) {
+      *(canvas.getPixel(startX + x, startY + y)) = *(resized->getPixel(x,y));
     }
+  }
 }
 
 HSLAPixel TileImage::getScaledPixelDouble(double startX, double endX,

@@ -82,6 +82,14 @@ PNG MosaicCanvas::drawMosaic(int pixelsPerTile) const
     // Create the image
     PNG mosaic(width, height);
 
+
+
+    map<TileImage *, bool> Resized;
+    map<TileImage *, PNG *> resizedImages;
+    for(size_t i = 0; i < myImages.size(); i++) {
+      Resized[myImages[i]] = false;
+    }
+
     // Create list of drawable tiles
     for (int row = 0; row < rows; row++) {
         if (enableOutput) {
@@ -100,7 +108,15 @@ PNG MosaicCanvas::drawMosaic(int pixelsPerTile) const
                 cerr << "Error: resolution not constant: x: " << (endX - startX)
                      << " y: " << (endY - startY) << endl;
 
-            images(row, col)->paste(mosaic, startX, startY, endX - startX);
+            if(!Resized[myImages[row * columns + col]]) {
+               PNG * resized = images(row, col)->resize(endX - startX);
+               resizedImages[myImages[row * columns + col]] = resized;
+               images(row, col)->paste(startX, startY, endX - startX, resized, mosaic);
+               Resized[myImages[row * columns + col]] = true;
+             }
+            else{
+               images(row, col)->paste(startX, startY, endX - startX, resizedImages[myImages[row * columns + col]], mosaic);
+            }
         }
     }
     if (enableOutput) {
